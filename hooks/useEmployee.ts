@@ -1,5 +1,3 @@
-"use client";
-
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, useEffect, useState } from "react";
@@ -13,6 +11,7 @@ export type Employee = {
   department: string;
   salary: number | string;
 };
+
 
 const initialState: Employee = {
   img: "",
@@ -51,10 +50,11 @@ const useEmployee = () => {
       await axios.post("http://localhost:5000/api/employee", inputs);
       toast.success("Employee Added Successfully");
       setInputs(initialState);
-      router.push("/employees");
+      router.replace("/employees");
       getEmployees();
     } catch (error: any) {
-      console.log(error.response?.data);
+      toast.error(error.response?.data);
+      console.log(error.response.data);
     }
   };
 
@@ -73,7 +73,7 @@ const useEmployee = () => {
       await axios.put(`http://localhost:5000/api/employee/${id}`, inputs);
       toast.success("Employee Updated");
       setInputs(initialState);
-      router.push("/employees");
+      router.replace("/employees");
       getEmployees();
     } catch (error: any) {
       console.log(error.response?.data);
@@ -87,7 +87,7 @@ const useEmployee = () => {
       );
       console.log(response.data);
       setInputs({
-        img:  response.data.employee.img,
+        img: response.data.employee.img,
         name: response.data.employee.name,
         email: response.data.employee.email,
         department: response.data.employee.department,

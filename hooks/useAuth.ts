@@ -24,7 +24,7 @@ const useAuth = () => {
         withCredentials: true,
       });
       toast.success(toastMessage);
-      router.push(navigate);
+      router.replace(navigate);
     } catch (error: any) {
       toast.error(error.response?.data);
       console.log(error.response?.data);
@@ -41,7 +41,7 @@ const useAuth = () => {
         },
       );
       toast.success("Logout User");
-      router.push("/login");
+      router.replace("/login");
     } catch (error: any) {
       toast.error(error.response?.data);
       console.log(error.response);

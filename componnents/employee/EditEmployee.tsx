@@ -22,7 +22,7 @@ const EditEmployee = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     await handleEdit(Number(params.id));
-    router.push("/employees");
+    router.replace("/employees");
   };
 
   return (

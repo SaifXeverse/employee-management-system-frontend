@@ -12,6 +12,8 @@ const AddEmployee = () => {
     await submitForm();
   };
 
+  console.log(inputs);
+  
   return (
       <EmployeeForm
         type="add"
