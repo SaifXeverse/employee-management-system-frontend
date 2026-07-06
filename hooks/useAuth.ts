@@ -1,10 +1,11 @@
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 const useAuth = () => {
   const router = useRouter();
+  
   const [inputs, setInputs] = useState({
     name: "",
     email: "",
@@ -16,7 +17,7 @@ const useAuth = () => {
   };
 
   const submitForm = async (auth: string) => {
-    const navigate = auth === "login" ? "/dashboard" : "/login";
+    const navigate = auth === "login" ? "/admin/dashboard" : "/admin/login";
     const toastMessage =
       auth === "login" ? "Login Successfully" : "User Registered";
     try {
@@ -25,6 +26,7 @@ const useAuth = () => {
       });
       toast.success(toastMessage);
       router.replace(navigate);
+      router.refresh()
     } catch (error: any) {
       toast.error(error.response?.data);
       console.log(error.response?.data);
@@ -41,7 +43,8 @@ const useAuth = () => {
         },
       );
       toast.success("Logout User");
-      router.replace("/login");
+      router.replace("/admin/login");
+      router.refresh()
     } catch (error: any) {
       toast.error(error.response?.data);
       console.log(error.response);

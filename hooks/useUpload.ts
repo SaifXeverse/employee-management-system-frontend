@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const useUpload = () => {
+const useUpload = (onSuccess: (url: string) => void) => {
   const [imageUrl, setImageUrl] = useState("")
   const [loading, setLoading] = useState(false)
 
@@ -20,6 +20,7 @@ const useUpload = () => {
 
     const data = await res.json();
     setImageUrl(data.url);
+    onSuccess(data.url)
     setLoading(false);
   };
 

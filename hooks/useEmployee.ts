@@ -49,8 +49,9 @@ const useEmployee = () => {
     try {
       await axios.post("http://localhost:5000/api/employee", inputs);
       toast.success("Employee Added Successfully");
-      setInputs(initialState);
-      router.replace("/employees");
+      setInputs(initialState);      
+      router.replace("/admin/employees");
+      router.refresh()
       getEmployees();
     } catch (error: any) {
       toast.error(error.response?.data);
@@ -73,7 +74,8 @@ const useEmployee = () => {
       await axios.put(`http://localhost:5000/api/employee/${id}`, inputs);
       toast.success("Employee Updated");
       setInputs(initialState);
-      router.replace("/employees");
+      router.replace("/admin/employees");
+      router.refresh()
       getEmployees();
     } catch (error: any) {
       console.log(error.response?.data);
