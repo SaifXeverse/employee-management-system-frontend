@@ -1,16 +1,16 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-export default async function MainLayout({
+export default async function MainLayoutEmployee({
   children,
 }: {
   children: React.ReactNode;
 }) {
   const cookieStore = await cookies();
-  const token = cookieStore.get("AccessToken")?.value;
+  const token = cookieStore.get("AccessTokenEmployee")?.value;
 
   if (!token) {
-    redirect("/admin/login");
+    redirect("/login");
   }
   return <main>{children}</main>;
 }

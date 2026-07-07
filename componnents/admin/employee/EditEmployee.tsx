@@ -2,7 +2,7 @@
 
 import { FormEvent, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
-import useEmployee from "@/hooks/useEmployee";
+import useEmployee from "@/hooks/admin/useEmployee";
 import useUpload from "@/hooks/useUpload";
 import EmployeeForm from "../dashboard/EmployeeForm";
 
@@ -12,6 +12,7 @@ const EditEmployee = () => {
 
   const { inputs, handleChange, setInputs, getEmployee, handleEdit } =
     useEmployee();
+    
   const { handleUpload, imageUrl, loading } = useUpload((url) => {
     setInputs((prev) => ({ ...prev, img: url }));
   });
@@ -27,8 +28,6 @@ const EditEmployee = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     await handleEdit(Number(params.id));
-    router.replace("/employees");
-    router.refresh()
   };
 
   return (

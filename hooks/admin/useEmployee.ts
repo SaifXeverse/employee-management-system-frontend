@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
 
 export type Employee = {
@@ -8,26 +8,34 @@ export type Employee = {
   img: string;
   name: string;
   email: string;
+  password: string;
   department: string;
+  status: string;
   salary: number | string;
 };
-
 
 const initialState: Employee = {
   img: "",
   name: "",
   email: "",
+  password: "",
   department: "",
+  status: "",
   salary: "",
 };
 
 const useEmployee = () => {
   const [employees, setEmployees] = useState<Employee[]>([]);
+  const [employeesInactive, setEmployeesInactive] = useState<Employee[]>([]);
   const [inputs, setInputs] = useState<Employee>(initialState);
+  const [search, setSearch] = useState("");
+  const [sortAsc, setSortAsc] = useState(true);
+
   const router = useRouter();
 
   useEffect(() => {
     getEmployees();
+    getEmployeesInactive();
   }, []);
 
   const getEmployees = async () => {
@@ -39,6 +47,30 @@ const useEmployee = () => {
     }
   };
 
+  const getEmployeesInactive = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:5000/api/employee/status",
+      );
+      setEmployeesInactive(response.data);
+    } catch (error: any) {
+      console.log(error.response?.data);
+    }
+  };
+
+  const filteredEmployees = useMemo(() => {
+    return [...employees]
+      .filter((employee) =>
+        employee.name.toLowerCase().includes(search.toLowerCase()),
+      )
+      .sort((a, b) =>
+        sortAsc
+          ? Number(a.salary) - Number(b.salary)
+          : Number(b.salary) - Number(a.salary),
+      );
+  }, [employees, search, sortAsc]);
+
+
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
@@ -49,9 +81,8 @@ const useEmployee = () => {
     try {
       await axios.post("http://localhost:5000/api/employee", inputs);
       toast.success("Employee Added Successfully");
-      setInputs(initialState);      
+      setInputs(initialState);
       router.replace("/admin/employees");
-      router.refresh()
       getEmployees();
     } catch (error: any) {
       toast.error(error.response?.data);
@@ -75,8 +106,17 @@ const useEmployee = () => {
       toast.success("Employee Updated");
       setInputs(initialState);
       router.replace("/admin/employees");
-      router.refresh()
       getEmployees();
+    } catch (error: any) {
+      console.log(error.response?.data);
+    }
+  };
+  
+  const handleUpdateInactiveEmployee = async (id: number) => {
+    try {
+      await axios.put(`http://localhost:5000/api/employee/status/${id}`, { status : "active"});
+      toast.success("Employee status updated");
+      getEmployeesInactive();
     } catch (error: any) {
       console.log(error.response?.data);
     }
@@ -92,7 +132,9 @@ const useEmployee = () => {
         img: response.data.employee.img,
         name: response.data.employee.name,
         email: response.data.employee.email,
+        password: "",
         department: response.data.employee.department,
+        status: response.data.employee.status,
         salary: response.data.employee.salary,
       });
     } catch (error: any) {
@@ -105,7 +147,14 @@ const useEmployee = () => {
     inputs,
     setInputs,
     getEmployees,
+    employeesInactive,
     getEmployee,
+    filteredEmployees,
+    handleUpdateInactiveEmployee,
+    setSearch,
+    search,
+    setSortAsc,
+    sortAsc,
     handleChange,
     submitForm,
     handleDelete,

@@ -1,14 +1,25 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Menu } from "lucide-react";
-import Sidebar from "@/componnents/dashboard/Sidebar";
+import Sidebar from "@/componnents/admin/dashboard/Sidebar";
 
-export default function DashboardLayout({
+export default function DashboardLayoutAdmin({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  useEffect(() => {
+      const onPageShow = (event: PageTransitionEvent) => {
+        if (event.persisted) {
+          window.location.reload();
+        }
+      };
+  
+      window.addEventListener("pageshow", onPageShow);
+  
+      return () => window.removeEventListener("pageshow", onPageShow);
+    }, []);
   const [isOpen, setIsOpen] = useState(false);
 
   return (

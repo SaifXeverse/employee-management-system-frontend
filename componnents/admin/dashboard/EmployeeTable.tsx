@@ -14,25 +14,11 @@ import {
   User,
 } from "lucide-react";
 
-import useEmployee from "@/hooks/useEmployee";
+import useEmployee from "@/hooks/admin/useEmployee";
 
 const EmployeeTable = () => {
-  const { employees, handleDelete } = useEmployee();
+  const { employees, handleDelete, filteredEmployees, setSearch, setSortAsc, search, sortAsc } = useEmployee();
 
-  const [search, setSearch] = useState("");
-  const [sortAsc, setSortAsc] = useState(true);
-
-  const filteredEmployees = useMemo(() => {
-    return [...employees]
-      .filter((employee) =>
-        employee.name.toLowerCase().includes(search.toLowerCase()),
-      )
-      .sort((a, b) =>
-        sortAsc
-          ? Number(a.salary) - Number(b.salary)
-          : Number(b.salary) - Number(a.salary),
-      );
-  }, [employees, search, sortAsc]);
 
   return (
     <div className="mx-auto w-full max-w-7xl overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
@@ -99,6 +85,9 @@ const EmployeeTable = () => {
                 Department
               </th>
               <th className="px-5 py-4 text-left text-sm font-semibold text-slate-600">
+                Status
+              </th>
+              <th className="px-5 py-4 text-left text-sm font-semibold text-slate-600">
                 Salary
               </th>
               <th className="px-5 py-4 text-center text-sm font-semibold text-slate-600">
@@ -109,7 +98,7 @@ const EmployeeTable = () => {
           <tbody>
             {filteredEmployees.length === 0 ? (
               <tr>
-                <td colSpan={5} className="py-20 text-center">
+                <td colSpan={6} className="py-20 text-center">
                   <Users size={50} className="mx-auto text-slate-300" />
                   <h3 className="mt-4 text-lg font-semibold text-slate-700">
                     No Employees Found
@@ -159,6 +148,18 @@ const EmployeeTable = () => {
                   <td className="px-5">
                     <span className="rounded-full bg-blue-100 px-3 py-1 text-xs font-medium text-blue-700">
                       {employee.department}
+                    </span>
+                  </td>
+
+                  <td className="px-5">
+                    <span
+                      className={`rounded-full px-3 py-1 text-xs font-semibold ${
+                        employee.status === "active"
+                          ? "bg-emerald-100 text-emerald-700"
+                          : "bg-red-100 text-red-700"
+                      }`}
+                    >
+                      {employee.status === "active" ? "Active" : "Inactive"}
                     </span>
                   </td>
 
@@ -257,6 +258,20 @@ const EmployeeTable = () => {
                 </div>
 
                 <div className="flex items-center justify-between">
+                  <span className="text-sm text-slate-500">Status</span>
+
+                  <span
+                    className={`rounded-full px-3 py-1 text-xs font-semibold ${
+                      employee.status === "active"
+                        ? "bg-emerald-100 text-emerald-700"
+                        : "bg-red-100 text-red-700"
+                    }`}
+                  >
+                    {employee.status === "active" ? "Active" : "Inactive"}
+                  </span>
+                </div>
+
+                <div className="flex items-center justify-between">
                   <span className="text-sm text-slate-500">Salary</span>
 
                   <span className="rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700">
@@ -294,6 +309,6 @@ const EmployeeTable = () => {
       </div>
     </div>
   );
-}
+};
 
 export default EmployeeTable;

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Mail, Lock } from "lucide-react";
 import { FormEvent } from "react";
-import useAuth from "@/hooks/useAuth";
+import useAuth from "@/hooks/admin/useAuth";
 import SideContent from "./SideContent";
 
 const Login = () => {

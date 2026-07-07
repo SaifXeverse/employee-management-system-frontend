@@ -9,6 +9,8 @@ import {
   Save,
   ArrowLeft,
   Camera,
+  Lock,
+  Shield,
 } from "lucide-react";
 import { ChangeEvent, FormEvent } from "react";
 
@@ -16,7 +18,9 @@ export type EmployeeInputs = {
   img: string;
   name: string;
   email: string;
+  password: string;
   department: string;
+  status: string;
   salary: number | string;
 };
 
@@ -152,6 +156,29 @@ const EmployeeForm = ({
           </div>
           <div>
             <label className="mb-2 block font-semibold text-slate-700">
+              Password
+            </label>
+
+            <div className="flex h-12 items-center rounded-xl border border-slate-200 bg-slate-50 px-4 transition focus-within:border-violet-600 focus-within:bg-white sm:h-14">
+              <Lock className="text-rose-600" size={20} />
+
+              <input
+                type="password"
+                name="password"
+                value={inputs.password}
+                onChange={handleChange}
+                placeholder={
+                  type === "add"
+                    ? "Enter password"
+                    : "Leave blank to keep current password"
+                }
+                className="ml-3 w-full min-w-0 bg-transparent text-sm outline-none sm:text-base"
+                required={type === "add"}
+              />
+            </div>
+          </div>
+          <div>
+            <label className="mb-2 block font-semibold text-slate-700">
               Department
             </label>
 
@@ -171,6 +198,26 @@ const EmployeeForm = ({
                 <option value="Finance">Finance</option>
                 <option value="Marketing">Marketing</option>
                 <option value="Sales">Sales</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <label className="mb-2 block font-semibold text-slate-700">
+              Status
+            </label>
+
+            <div className="flex h-12 items-center rounded-xl border border-slate-200 bg-slate-50 px-4 transition focus-within:border-violet-600 focus-within:bg-white sm:h-14">
+              <Shield className="text-emerald-600" size={20} />
+
+              <select
+                name="status"
+                value={inputs.status}
+                onChange={handleChange}
+                className="ml-3 w-full min-w-0 bg-transparent text-sm outline-none sm:text-base"
+                required
+              >
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
               </select>
             </div>
           </div>
@@ -214,6 +261,6 @@ const EmployeeForm = ({
       </form>
     </div>
   );
-}
+};
 
 export default EmployeeForm;

@@ -1,6 +1,6 @@
 "use client";
 
-import useEmployee from "@/hooks/useEmployee";
+import useEmployee from "@/hooks/admin/useEmployee";
 import {
   Users,
   Building2,

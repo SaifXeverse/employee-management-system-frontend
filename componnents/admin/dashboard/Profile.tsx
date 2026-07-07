@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowLeft, Mail, Pencil, User, Camera, Save, X } from "lucide-react";
 import useUpload from "@/hooks/useUpload";
-import useProfile from "@/hooks/useProfile";
+import useProfile from "@/hooks/admin/useProfile";
 
 const Profile = () => {
   const {

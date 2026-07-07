@@ -11,8 +11,9 @@ import {
   ChevronRight,
   X,
   User,
+  UserRoundKey
 } from "lucide-react";
-import useAuth from "@/hooks/useAuth";
+import useAuth from "@/hooks/admin/useAuth";
 
 const menu = [
   {
@@ -29,6 +30,11 @@ const menu = [
     title: "Add Employee",
     href: "/admin/employees/add",
     icon: UserPlus,
+  },
+  {
+    title: "Employee Permission",
+    href: "/admin/permission",
+    icon: UserRoundKey,
   },
   {
     title: "Profile",

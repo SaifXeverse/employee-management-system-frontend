@@ -1,0 +1,187 @@
+"use client";
+
+import { useMemo } from "react";
+import Image from "next/image";
+import { Search, ShieldCheck, User } from "lucide-react";
+import useEmployee from "@/hooks/admin/useEmployee";
+
+const EmployeePermission = () => {
+  const { employeesInactive, search, setSearch, handleUpdateInactiveEmployee } =
+    useEmployee();
+
+  const filteredEmployeesInactive = useMemo(() => {
+    return employeesInactive.filter((employeesInactive) =>
+      employeesInactive.name.toLowerCase().includes(search.toLowerCase()),
+    );
+  }, [employeesInactive, search]);
+
+  const handleStatus = async (id: number) => {
+    await handleUpdateInactiveEmployee(id);
+  };
+
+  return (
+    <div className="mx-auto w-full max-w-7xl overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+      <div className="flex flex-col gap-5 border-b border-slate-200 p-5 lg:flex-row lg:items-center lg:justify-between">
+        <div className="flex items-center gap-4">
+          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-linear-to-r from-violet-600 to-blue-600">
+            <ShieldCheck className="text-white" size={22} />
+          </div>
+
+          <div>
+            <h2 className="text-2xl font-bold text-slate-900">
+              Employee Permissions
+            </h2>
+
+            <p className="text-sm text-slate-500">
+              {filteredEmployeesInactive.length} Employees Available
+            </p>
+          </div>
+        </div>
+
+        <div className="relative w-full lg:w-80">
+          <Search
+            size={18}
+            className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
+          />
+
+          <input
+            type="text"
+            placeholder="Search employee..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="h-11 w-full rounded-xl border border-slate-200 bg-slate-50 pl-11 pr-4 text-sm outline-none transition focus:border-violet-600"
+          />
+        </div>
+      </div>
+
+      <div className="hidden overflow-x-auto md:block">
+        <table className="min-w-full">
+          <thead>
+            <tr className="border-b border-slate-200 bg-slate-50">
+              <th className="px-6 py-4 text-left text-sm font-semibold text-slate-600">
+                Employee
+              </th>
+
+              <th className="px-6 py-4 text-left text-sm font-semibold text-slate-600">
+                Email
+              </th>
+
+              <th className="px-6 py-4 text-center text-sm font-semibold text-slate-600">
+                Permission
+              </th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {filteredEmployeesInactive.length === 0 ? (
+              <tr>
+                <td colSpan={3} className="py-20 text-center text-slate-500">
+                  No Employees Found
+                </td>
+              </tr>
+            ) : (
+              filteredEmployeesInactive.map((employee) => (
+                <tr key={employee.id} className="border-b border-slate-100">
+                  <td className="px-6 py-4">
+                    <div className="flex items-center gap-4">
+                      <div className="relative h-14 w-14 overflow-hidden rounded-full border-4 border-violet-200 bg-slate-100">
+                        {employee.img ? (
+                          <Image
+                            src={employee.img}
+                            alt={employee.name}
+                            fill
+                            className="object-cover"
+                          />
+                        ) : (
+                          <div className="flex h-full w-full items-center justify-center bg-linear-to-r from-violet-600 to-blue-600">
+                            <User className="text-white" size={24} />
+                          </div>
+                        )}
+                      </div>
+
+                      <div>
+                        <h3 className="font-semibold text-slate-900">
+                          {employee.name}
+                        </h3>
+
+                        <p className="text-sm text-slate-500">Employee</p>
+                      </div>
+                    </div>
+                  </td>
+
+                  <td className="px-6 text-sm text-slate-600">
+                    {employee.email}
+                  </td>
+
+                  <td className="px-6">
+                    <div className="flex justify-center">
+                      <label className="relative inline-flex cursor-pointer items-center">
+                        <button
+                          className="bg-violet-600 rounded-md transition cursor-pointer hover:bg-violet-500 text-white px-4 py-2"
+                          onClick={() => handleStatus(employee.id!)}
+                        >
+                          Active
+                        </button>
+                      </label>
+                    </div>
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
+
+      <div className="space-y-4 p-4 md:hidden">
+        {filteredEmployeesInactive.map((employee) => (
+          <div
+            key={employee.id}
+            className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"
+          >
+            <div className="flex items-center gap-4">
+              <div className="relative h-14 w-14 overflow-hidden rounded-full border-2 border-violet-200 bg-slate-100">
+                {employee.img ? (
+                  <Image
+                    src={employee.img}
+                    alt={employee.name}
+                    fill
+                    className="object-cover"
+                  />
+                ) : (
+                  <div className="flex h-full w-full items-center justify-center bg-linear-to-r from-violet-600 to-blue-600">
+                    <User className="text-white" size={22} />
+                  </div>
+                )}
+              </div>
+
+              <div className="flex-1">
+                <h3 className="font-semibold text-slate-900">
+                  {employee.name}
+                </h3>
+
+                <p className="text-sm text-slate-500">{employee.email}</p>
+              </div>
+            </div>
+
+            <div className="mt-5 flex items-center justify-between border-t border-slate-100 pt-4">
+              <span className="font-medium text-slate-700">Permission</span>
+
+              <label className="relative inline-flex cursor-pointer items-center">
+                <input
+                  type="checkbox"
+                  onChange={() => handleStatus(employee.id!)}
+                  defaultChecked={false}
+                  className="peer sr-only"
+                />
+
+                <div className="peer h-6 w-11 rounded-full bg-slate-300 transition peer-checked:bg-violet-600 after:absolute after:left-0.5 after:top-0.5 after:h-5 after:w-5 after:rounded-full after:bg-white after:transition-all after:content-[''] peer-checked:after:translate-x-5"></div>
+              </label>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default EmployeePermission;

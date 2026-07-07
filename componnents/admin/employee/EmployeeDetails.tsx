@@ -13,7 +13,7 @@ import {
   BadgeCheck,
 } from "lucide-react";
 
-import useEmployee from "@/hooks/useEmployee";
+import useEmployee from "@/hooks/admin/useEmployee";
 import Image from "next/image";
 
 const EmployeeDetails = () => {
@@ -57,6 +57,7 @@ const EmployeeDetails = () => {
                 <Image
                   src={inputs.img}
                   alt={inputs.name}
+                  loading="eager"
                   fill
                   className="object-cover"
                 />

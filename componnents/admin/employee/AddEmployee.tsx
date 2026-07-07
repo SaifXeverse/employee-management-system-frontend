@@ -1,7 +1,7 @@
 "use client"
 
 import { FormEvent } from "react";
-import useEmployee from "@/hooks/useEmployee";
+import useEmployee from "@/hooks/admin/useEmployee";
 import useUpload from "@/hooks/useUpload";
 import EmployeeForm from "../dashboard/EmployeeForm";
 

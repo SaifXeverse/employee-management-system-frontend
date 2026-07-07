@@ -1,5 +1,5 @@
-import AddEmployee from '@/componnents/employee/AddEmployee'
-import React from 'react'
+import AddEmployee from "@/componnents/admin/employee/AddEmployee"
+
 
 const page = () => {
   return (
