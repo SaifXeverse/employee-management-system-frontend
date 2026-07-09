@@ -7,7 +7,6 @@ import useUpload from "@/hooks/useUpload";
 import EmployeeForm from "../dashboard/EmployeeForm";
 
 const EditEmployee = () => {
-  const router = useRouter();
   const params = useParams();
 
   const { inputs, handleChange, setInputs, getEmployee, handleEdit } =
@@ -22,8 +21,6 @@ const EditEmployee = () => {
       getEmployee(Number(params.id));
     }
   }, []);
-
-  console.log(inputs);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

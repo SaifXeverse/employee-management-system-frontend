@@ -1,4 +1,4 @@
-import EditEmployee from "@/componnents/admin/employee/EditEmployee"
+import EditEmployee from "@/components/admin/employee/EditEmployee"
 
 
 const page = () => {

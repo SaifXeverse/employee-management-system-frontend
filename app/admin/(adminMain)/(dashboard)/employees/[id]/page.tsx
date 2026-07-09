@@ -1,4 +1,4 @@
-import EmployeeDetails from "@/componnents/admin/employee/EmployeeDetails"
+import EmployeeDetails from "@/components/admin/employee/EmployeeDetails"
 
 const page = () => {
   return (

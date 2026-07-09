@@ -1,4 +1,4 @@
-import EmployeeTable from "@/componnents/admin/dashboard/EmployeeTable";
+import EmployeeTable from "@/components/admin/dashboard/EmployeeTable";
 
 
 export default function EmployeesPage() {

@@ -1,4 +1,4 @@
-import Profile from "@/componnents/admin/dashboard/Profile"
+import Profile from "@/components/admin/dashboard/Profile"
 
 const page = () => {
   return (

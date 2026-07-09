@@ -15,7 +15,7 @@ const Profile = () => {
     handleCancel,
     handleSave,
   } = useProfile();
-  const { handleUpload, imageUrl, loading } = useUpload((url) => {
+  const { handleUpload, loading } = useUpload((url) => {
     setUserInput((prev) => ({ ...prev, img: url }));
   });
 
@@ -51,7 +51,9 @@ const Profile = () => {
                 <Image
                   src={userInput.img}
                   alt={userInput.name}
-                  fill
+                  loading="eager"
+                  width={144}
+                  height={144}
                   className="object-cover"
                 />
               ) : (

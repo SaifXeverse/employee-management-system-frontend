@@ -14,10 +14,24 @@ const initialState = {
 const useEmployeeDashboard = () => {
   const [open, setOpen] = useState(false);
   const [employee, setEmployee] = useState(initialState);
+  const [employeeInput, setEmployeeInput] = useState(initialState);
 
   useEffect(() => {
     getEmployee();
   }, []);
+
+  useEffect(() => {
+    if (employee) {
+      setEmployeeInput({
+        img: employee.img || "",
+        name: employee.name || "",
+        email: employee.email || "",
+        department: employee.department || "",
+        status: employee.status || "",
+        salary: employee.salary || "",
+      });
+    }
+  }, [employee]);
 
   const getEmployee = async () => {
     try {
@@ -28,7 +42,6 @@ const useEmployeeDashboard = () => {
         },
       );
       setEmployee(employee.data);
-      console.log(employee.data);
     } catch (error: any) {
       console.log(error.response.data);
     }
@@ -37,7 +50,7 @@ const useEmployeeDashboard = () => {
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
-    setEmployee((prev) => ({
+    setEmployeeInput((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
     }));
@@ -45,13 +58,13 @@ const useEmployeeDashboard = () => {
 
   const handleSave = async () => {
     try {
-    //   await axios.put(`http://localhost:5000/api/employee/profile`, userInput, {
-    //     withCredentials: true
-    //   });
-    //   toast.success("User Updated");
-    //   setUserInput(initialState);
+      await axios.put(`http://localhost:5000/api/employee/profile`, employeeInput, {
+        withCredentials: true
+      });
+      toast.success("Employee profile updated");
+      setEmployeeInput(initialState);
       getEmployee();
-      () => setOpen(false)
+      setOpen(false)
     } catch (error: any) {
       toast.error(error.response?.data)
       console.log(error.response?.data);
@@ -60,6 +73,8 @@ const useEmployeeDashboard = () => {
 
   return {
     employee,
+    employeeInput,
+    setEmployeeInput,
     open,
     setOpen,
     handleChange,

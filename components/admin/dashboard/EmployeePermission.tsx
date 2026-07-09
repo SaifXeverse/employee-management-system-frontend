@@ -29,7 +29,7 @@ const EmployeePermission = () => {
 
           <div>
             <h2 className="text-2xl font-bold text-slate-900">
-              Employee Permissions
+              Pending Approvals
             </h2>
 
             <p className="text-sm text-slate-500">
@@ -89,8 +89,10 @@ const EmployeePermission = () => {
                           <Image
                             src={employee.img}
                             alt={employee.name}
-                            fill
-                            className="object-cover"
+                            loading="eager"
+                            width={144}
+                            height={144}
+                            className="h-full w-full object-cover"
                           />
                         ) : (
                           <div className="flex h-full w-full items-center justify-center bg-linear-to-r from-violet-600 to-blue-600">
@@ -144,8 +146,10 @@ const EmployeePermission = () => {
                   <Image
                     src={employee.img}
                     alt={employee.name}
-                    fill
-                    className="object-cover"
+                    loading="eager"
+                    width={200}
+                    height={200}
+                    className="h-full w-full object-cover"
                   />
                 ) : (
                   <div className="flex h-full w-full items-center justify-center bg-linear-to-r from-violet-600 to-blue-600">

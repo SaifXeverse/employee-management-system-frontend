@@ -1,4 +1,4 @@
-import EmployeePermission from "@/componnents/admin/dashboard/EmployeePermission"
+import EmployeePermission from "@/components/admin/dashboard/EmployeePermission"
 
 const page = () => {
   return (

@@ -17,8 +17,15 @@ import {
 import useEmployee from "@/hooks/admin/useEmployee";
 
 const EmployeeTable = () => {
-  const { employees, handleDelete, filteredEmployees, setSearch, setSortAsc, search, sortAsc } = useEmployee();
-
+  const {
+    employees,
+    handleDelete,
+    filteredEmployees,
+    setSearch,
+    setSortAsc,
+    search,
+    sortAsc,
+  } = useEmployee();
 
   return (
     <div className="mx-auto w-full max-w-7xl overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
@@ -121,8 +128,10 @@ const EmployeeTable = () => {
                           <Image
                             src={employee.img}
                             alt={employee.name}
-                            fill
-                            className="object-cover"
+                            loading="eager"
+                            width={200}
+                            height={200}
+                            className="h-full w-full object-cover"
                           />
                         ) : (
                           <div className="flex h-full w-full items-center justify-center bg-linear-to-r from-violet-600 to-blue-600">
@@ -147,7 +156,7 @@ const EmployeeTable = () => {
 
                   <td className="px-5">
                     <span className="rounded-full bg-blue-100 px-3 py-1 text-xs font-medium text-blue-700">
-                      {employee.department}
+                      {employee.department || "Unassigned"}
                     </span>
                   </td>
 
@@ -165,7 +174,7 @@ const EmployeeTable = () => {
 
                   <td className="px-5">
                     <span className="rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700">
-                      ${employee.salary}
+                      ${employee.salary || "0.00"}
                     </span>
                   </td>
 
@@ -228,8 +237,10 @@ const EmployeeTable = () => {
                     <Image
                       src={employee.img}
                       alt={employee.name}
-                      fill
-                      className="object-cover"
+                      loading="eager"
+                      width={200}
+                      height={200}
+                      className="h-full w-full object-cover"
                     />
                   ) : (
                     <div className="flex h-full w-full items-center justify-center bg-linear-to-r from-violet-600 to-blue-600">

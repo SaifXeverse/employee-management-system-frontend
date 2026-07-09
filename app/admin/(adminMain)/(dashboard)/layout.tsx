@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Menu } from "lucide-react";
-import Sidebar from "@/componnents/admin/dashboard/Sidebar";
+import Sidebar from "@/components/admin/dashboard/Sidebar";
 
 export default function DashboardLayoutAdmin({
   children,

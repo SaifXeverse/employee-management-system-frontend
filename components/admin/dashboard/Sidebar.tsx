@@ -11,7 +11,7 @@ import {
   ChevronRight,
   X,
   User,
-  UserRoundKey
+  ClipboardClock
 } from "lucide-react";
 import useAuth from "@/hooks/admin/useAuth";
 
@@ -32,9 +32,9 @@ const menu = [
     icon: UserPlus,
   },
   {
-    title: "Employee Permission",
+    title: "Pending Approvals",
     href: "/admin/permission",
-    icon: UserRoundKey,
+    icon: ClipboardClock,
   },
   {
     title: "Profile",

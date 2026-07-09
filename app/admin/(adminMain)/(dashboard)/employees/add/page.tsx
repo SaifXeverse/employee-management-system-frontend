@@ -1,4 +1,4 @@
-import AddEmployee from "@/componnents/admin/employee/AddEmployee"
+import AddEmployee from "@/components/admin/employee/AddEmployee"
 
 
 const page = () => {

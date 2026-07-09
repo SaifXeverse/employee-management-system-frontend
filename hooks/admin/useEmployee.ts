@@ -136,7 +136,7 @@ const useEmployee = () => {
         department: response.data.employee.department,
         status: response.data.employee.status,
         salary: response.data.employee.salary,
-      });
+      });      
     } catch (error: any) {
       console.log(error.response?.data);
     }

@@ -4,33 +4,16 @@ import Image from "next/image";
 import { Pencil, Mail, Building2, DollarSign, ShieldCheck } from "lucide-react";
 import EditProfileModal from "./EditProfileModal";
 import useEmployeeDashboard from "@/hooks/employee/useEmployeeDashboard";
+import useUpload from "@/hooks/useUpload";
+import InfoCard from "./InfoCard";
 
-function InfoCard({
-  icon,
-  title,
-  value,
-}: {
-  icon: React.ReactNode;
-  title: string;
-  value: string;
-}) {
-  return (
-    <div className="rounded-2xl flex flex-col items-center border border-slate-200 bg-slate-50 p-6 transition hover:shadow-lg">
-      <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-linear-to-r from-[#FF4B2B] to-[#FF416C] text-white">
-        {icon}
-      </div>
-
-      <p className="text-sm text-slate-500">{title}</p>
-
-      <h3 className="mt-2 text-lg font-semibold text-slate-800">
-        {value}
-      </h3>
-    </div>
-  );
-}
 
 const Profile = () => {
-  const { employee, open, setOpen } = useEmployeeDashboard();
+  const { employee, employeeInput, setEmployeeInput, open, setOpen, handleChange, handleSave } =
+    useEmployeeDashboard();
+  const { handleUpload, imageUrl, loading } = useUpload((url) => {
+    setEmployeeInput((prev) => ({ ...prev, img: url }));
+  });
 
   return (
     <>
@@ -38,9 +21,7 @@ const Profile = () => {
         <div className="bg-linear-to-r from-[#FF4B2B] to-[#FF416C] pb-24">
           <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-8">
             <div>
-              <h1 className="text-4xl font-bold text-white">
-                My Profile
-              </h1>
+              <h1 className="text-4xl font-bold text-white">My Profile</h1>
 
               <p className="mt-2 text-white/80">
                 View and manage your profile.
@@ -61,28 +42,30 @@ const Profile = () => {
           <div className="rounded-3xl bg-white p-8 shadow-xl">
             <div className="flex flex-col items-center border-b pb-8">
               <div className="h-36 w-36 overflow-hidden rounded-full border-4 border-[#FF416C] bg-slate-200">
-                {employee.img ? (
-                  <Image
-                    src={employee.img}
-                    alt="Profile"
-                    width={144}
-                    height={144}
-                    className="h-full w-full object-cover"
-                  />
-                ) : (
-                  <div className="flex h-full items-center justify-center text-5xl font-bold text-slate-500">
-                    {employee.name.charAt(0)}
-                  </div>
-                )}
+                {
+                  employee.img ? (
+                    <Image
+                      src={employee.img}
+                      alt="Profile"
+                      loading="eager"
+                      width={144}
+                      height={144}
+                      className="h-full w-full object-cover"
+                    />
+                  )
+                   : (
+                    <div className="flex h-full items-center justify-center text-5xl font-bold text-slate-500">
+                      {employee.name.charAt(0)}
+                    </div>
+                  )
+                }
               </div>
 
               <h2 className="mt-5 text-3xl font-bold text-slate-800">
                 {employee.name}
               </h2>
 
-              <p className="mt-2 text-slate-500">
-                {employee.department}
-              </p>
+              <p className="mt-2 text-slate-500">{employee.department}</p>
             </div>
 
             <div className="mt-8 grid gap-6 md:grid-cols-2">
@@ -95,7 +78,7 @@ const Profile = () => {
               <InfoCard
                 icon={<Building2 size={20} />}
                 title="Department"
-                value={employee.department}
+                value={employee.department || "Unassigned - Contact Admin"}
               />
 
               <InfoCard
@@ -107,7 +90,7 @@ const Profile = () => {
               <InfoCard
                 icon={<DollarSign size={20} />}
                 title="Salary"
-                value={`$${employee.salary}`}
+                value={`$${employee.salary || "0.00 - Contact Admin"}`}
               />
             </div>
           </div>
@@ -116,11 +99,19 @@ const Profile = () => {
 
       <EditProfileModal
         open={open}
+        handleUpload={handleUpload}
+        imageUrl={imageUrl}
+        loading={loading}
         onClose={() => setOpen(false)}
-        employee={employee}
+        employeeInput={employeeInput}
+        handleSave={handleSave}
+        handleChange={handleChange}
       />
     </>
   );
 };
 
 export default Profile;
+
+
+
