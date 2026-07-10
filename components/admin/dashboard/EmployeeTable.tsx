@@ -1,6 +1,5 @@
 "use client";
 
-import { useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -70,6 +69,7 @@ const EmployeeTable = () => {
 
           <Link
             href="/admin/employees/add"
+            replace
             prefetch={false}
             className="flex h-11 items-center justify-center gap-2 rounded-xl bg-linear-to-r from-violet-600 to-blue-600 px-5 text-sm font-semibold text-white transition hover:shadow-lg"
           >
@@ -79,7 +79,7 @@ const EmployeeTable = () => {
         </div>
       </div>
       <div className="hidden overflow-x-auto md:block">
-        <table className="min-w-full">
+        <table className="w-full">
           <thead>
             <tr className="border-b border-slate-200 bg-slate-50">
               <th className="px-5 py-4 text-left text-sm font-semibold text-slate-600">
@@ -182,6 +182,7 @@ const EmployeeTable = () => {
                     <div className="flex justify-center gap-2">
                       <Link
                         href={`/admin/employees/${employee.id}`}
+                        replace
                         prefetch={false}
                         className="rounded-lg bg-blue-100 p-2 text-blue-600 transition hover:bg-blue-200"
                       >
@@ -190,6 +191,7 @@ const EmployeeTable = () => {
 
                       <Link
                         href={`/admin/employees/${employee.id}/edit`}
+                        replace
                         prefetch={false}
                         className="rounded-lg bg-emerald-100 p-2 text-emerald-600 transition hover:bg-emerald-200"
                       >
@@ -264,7 +266,7 @@ const EmployeeTable = () => {
                   <span className="text-sm text-slate-500">Department</span>
 
                   <span className="rounded-full bg-blue-100 px-3 py-1 text-xs font-medium text-blue-700">
-                    {employee.department}
+                    {employee.department || "Unassigned"}
                   </span>
                 </div>
 
@@ -286,13 +288,14 @@ const EmployeeTable = () => {
                   <span className="text-sm text-slate-500">Salary</span>
 
                   <span className="rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700">
-                    ${employee.salary}
+                    ${employee.salary || "0.00"}
                   </span>
                 </div>
               </div>
               <div className="mt-5 flex justify-end gap-2 border-t border-slate-100 pt-4">
                 <Link
                   href={`/admin/employees/${employee.id}`}
+                  replace
                   prefetch={false}
                   className="rounded-lg bg-blue-100 p-2 text-blue-600 transition hover:bg-blue-200"
                 >
@@ -301,6 +304,7 @@ const EmployeeTable = () => {
 
                 <Link
                   href={`/admin/employees/${employee.id}/edit`}
+                  replace
                   prefetch={false}
                   className="rounded-lg bg-emerald-100 p-2 text-emerald-600 transition hover:bg-emerald-200"
                 >

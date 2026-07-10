@@ -1,11 +1,13 @@
 "use client";
 
 import Image from "next/image";
-import { Pencil, Mail, Building2, DollarSign, ShieldCheck } from "lucide-react";
+import { Pencil, Mail, Building2, DollarSign, ShieldCheck, ArrowLeftIcon } from "lucide-react";
 import EditProfileModal from "./EditProfileModal";
 import useEmployeeDashboard from "@/hooks/employee/useEmployeeDashboard";
 import useUpload from "@/hooks/useUpload";
 import InfoCard from "./InfoCard";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 
 const Profile = () => {
@@ -14,6 +16,15 @@ const Profile = () => {
   const { handleUpload, imageUrl, loading } = useUpload((url) => {
     setEmployeeInput((prev) => ({ ...prev, img: url }));
   });
+  useEffect(() => {
+    if (open) {
+      setEmployeeInput((prev) => ({ ...prev, img: employee?.img || "" }));
+    } else {
+      setEmployeeInput((prev) => ({ ...prev, img: "" }));
+    }
+  }, [open, employee?.img, setEmployeeInput]);
+
+  const router = useRouter()
 
   return (
     <>
@@ -28,6 +39,7 @@ const Profile = () => {
               </p>
             </div>
 
+            <div className="flex gap-4">
             <button
               onClick={() => setOpen(true)}
               className="flex items-center gap-2 rounded-full border border-white px-6 py-3 font-semibold text-white transition hover:bg-white hover:text-[#FF416C]"
@@ -35,6 +47,14 @@ const Profile = () => {
               <Pencil size={18} />
               Edit Profile
             </button>
+            <button
+              onClick={() => router.replace("/dashboard")}
+              className="flex items-center gap-2 rounded-full border border-white hover:border-0 px-6 py-3 font-semibold text-white transition hover:bg-white hover:text-black"
+            >
+              <ArrowLeftIcon size={18} />
+              Back
+            </button>
+            </div>
           </div>
         </div>
 

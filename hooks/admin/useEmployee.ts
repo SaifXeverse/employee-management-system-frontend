@@ -85,6 +85,7 @@ const useEmployee = () => {
       router.replace("/admin/employees");
       getEmployees();
     } catch (error: any) {
+      toast.error(error.response?.data || "The server is down")
       toast.error(error.response?.data);
       console.log(error.response.data);
     }
@@ -96,6 +97,7 @@ const useEmployee = () => {
       toast.success(`${name} deleted successfully`);
       getEmployees();
     } catch (error: any) {
+      toast.error(error.response?.data || "The server is down")
       console.log(error.response?.data);
     }
   };
@@ -108,6 +110,7 @@ const useEmployee = () => {
       router.replace("/admin/employees");
       getEmployees();
     } catch (error: any) {
+      toast.error(error.response?.data || "The server is down")
       console.log(error.response?.data);
     }
   };
@@ -118,6 +121,7 @@ const useEmployee = () => {
       toast.success("Employee status updated");
       getEmployeesInactive();
     } catch (error: any) {
+      toast.error(error.response?.data || "The server is down")
       console.log(error.response?.data);
     }
   };

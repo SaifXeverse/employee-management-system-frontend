@@ -26,7 +26,7 @@ const useAuthEmployee = () => {
       router.replace("/login");
       router.refresh();
     } catch (error: any) {
-      toast.error(error.response?.data);
+      toast.error(error.response?.data || "The server is down");
       console.log(error.response?.data);
     }
   };
@@ -38,6 +38,7 @@ const useAuthEmployee = () => {
         withCredentials: true,
       });
       toast.success("Login Successfully");
+      router.refresh();
       router.replace("/dashboard");
       router.refresh();
     } catch (error: any) {
@@ -52,10 +53,11 @@ const useAuthEmployee = () => {
         withCredentials: true,
       });
       toast.success("Logout Employee");
+      router.refresh();
       router.replace("/login");
       router.refresh();
     } catch (error: any) {
-      toast.error(error.response?.data);
+      toast.error(error.response?.data || "The server is down");
       console.log(error.response);
     }
   };

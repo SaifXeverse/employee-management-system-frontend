@@ -43,6 +43,8 @@ const EmployeeForm = ({
   handleChange,
   handleSubmit,
 }: Props) => {
+  console.log(type);
+  
   return (
     <div className="mx-auto w-full max-w-5xl px-4 sm:px-6 lg:px-0">
       <div className="mb-8 flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
@@ -61,6 +63,7 @@ const EmployeeForm = ({
         <Link
           prefetch={false}
           href="/admin/employees"
+          replace
           className="flex w-full items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-5 py-3 text-slate-700 shadow-sm transition hover:bg-slate-50 sm:w-auto"
         >
           <ArrowLeft size={18} />
@@ -74,9 +77,9 @@ const EmployeeForm = ({
         <div className="mb-8 flex flex-col items-center">
           <div className="relative">
             <div className="relative h-28 w-28 overflow-hidden rounded-full border-4 border-violet-200 bg-slate-100 shadow-lg">
-              {imageUrl || inputs.img ? (
+              {inputs.img || imageUrl ? (
                 <img
-                  src={imageUrl || inputs.img}
+                  src={inputs.img || imageUrl}
                   alt="Employee"
                   className="h-full w-full object-cover"
                 />
@@ -245,6 +248,7 @@ const EmployeeForm = ({
           <Link
             prefetch={false}
             href="/admin/employees"
+            replace
             className="w-full rounded-xl border border-slate-300 px-6 py-3 text-center font-medium text-slate-700 transition hover:bg-slate-100 sm:w-auto"
           >
             Cancel

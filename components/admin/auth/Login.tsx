@@ -69,7 +69,7 @@ const Login = () => {
 
           <p className="text-center mt-4 text-slate-500">
             Don't have an account? {" "}
-            <Link  prefetch={false} href="/admin/register" className="font-semibold cursor-pointer text-violet-600 hover:text-violet-500">
+            <Link  prefetch={false} href="/admin/register" replace className="font-semibold cursor-pointer text-violet-600 hover:text-violet-500">
               Register
             </Link>
           </p>

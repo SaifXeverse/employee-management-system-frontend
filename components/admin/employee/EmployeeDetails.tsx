@@ -42,6 +42,7 @@ const EmployeeDetails = () => {
 
         <Link
           href="/admin/employees"
+          replace
           prefetch={false}
           className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium shadow-sm transition hover:bg-slate-50"
         >
@@ -138,6 +139,7 @@ const EmployeeDetails = () => {
 
           <Link
             href={`/admin/employees/${params.id}/edit`}
+            replace
             prefetch={false}
             className="inline-flex items-center justify-center gap-2 rounded-xl bg-linear-to-r from-violet-600 to-blue-600 px-6 py-2.5 text-sm font-semibold text-white transition duration-300 hover:shadow-lg"
           >

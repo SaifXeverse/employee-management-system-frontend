@@ -57,20 +57,20 @@ const EditProfileModal = ({ open, onClose, handleUpload, imageUrl, loading, empl
         <div className="mb-8 flex justify-center">
           <div className="relative">
             <div className="relative h-28 w-28 overflow-hidden rounded-full bg-slate-200 shadow-lg">
-              {imageUrl || employeeInput.img ? (
+              {employeeInput.img || imageUrl ? (
                 <img
-                  src={imageUrl || employeeInput.img}
+                  src={employeeInput.img || imageUrl}
                   alt="Employee"
                   className="h-full w-full object-cover"
                 />
               ) : (
-                <div className="flex h-full w-full items-center justify-center bg-slate-100">
+                <div className="flex h-full w-full items-center rounded-full justify-center bg-slate-100">
                   <User size={48} className="text-slate-400" />
                 </div>
               )}
 
               {loading && (
-                <div className="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+                <div className="absolute inset-0 flex items-center rounded-full justify-center bg-black/40 backdrop-blur-sm">
                   <div className="h-10 w-10 animate-spin rounded-full border-4 border-[#FF416C] border-t-transparent" />
                 </div>
               )}

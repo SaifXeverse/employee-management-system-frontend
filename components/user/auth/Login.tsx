@@ -86,7 +86,7 @@ const Login = () => {
                 Enter your personal details and start your journey with us.
               </p>
 
-              <Link href="/register">
+              <Link href="/register" replace>
                 <button className="mt-10 rounded-full border border-white px-12 py-3 text-sm font-bold uppercase tracking-[3px] text-white transition duration-300 hover:bg-white hover:text-[#FF416C]">
                   Sign Up
                 </button>

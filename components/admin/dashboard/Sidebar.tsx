@@ -116,6 +116,7 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
               <Link
                 key={item.href}
                 href={item.href}
+                replace
                 onClick={() => setIsOpen(false)}
                 className={`group mb-2 flex items-center justify-between rounded-2xl px-5 py-4 transition-all duration-300 ${
                   active

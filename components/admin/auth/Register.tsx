@@ -75,7 +75,7 @@ const Register = () => {
           </form>
           <p className="mt-4 text-center text-slate-500">
             Already have an account?{" "}
-            <Link  prefetch={false} href="/admin/login" className="font-semibold cursor-pointer text-violet-600 hover:text-violet-500">
+            <Link  prefetch={false} href="/admin/login" replace className="font-semibold cursor-pointer text-violet-600 hover:text-violet-500">
               Login
             </Link>
           </p>

@@ -29,9 +29,15 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <Toaster toastOptions={{ duration: 2000 }} position="bottom-right" />
+        <Toaster
+          toastOptions={{
+            duration: 2000,
+            style: { maxWidth: "max-content", whiteSpace: "nowrap" },
+          }}
+          position="bottom-right"
+        />
         {children}
-        </body>
+      </body>
     </html>
   );
 }

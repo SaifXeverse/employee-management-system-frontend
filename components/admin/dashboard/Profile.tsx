@@ -20,7 +20,7 @@ const Profile = () => {
   });
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-8">
+    <div className="mx-auto max-w-5xl px-4 py-3">
       <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-3xl font-bold text-slate-900">My Profile</h1>
@@ -32,6 +32,7 @@ const Profile = () => {
 
         <Link
           href="/admin/employees"
+          replace
           className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-semibold shadow-sm transition hover:-translate-y-0.5 hover:bg-slate-50"
         >
           <ArrowLeft size={18} />
@@ -54,7 +55,7 @@ const Profile = () => {
                   loading="eager"
                   width={144}
                   height={144}
-                  className="object-cover"
+                  className="w-full h-full object-cover"
                 />
               ) : (
                 <div className="flex h-full w-full items-center justify-center bg-linear-to-r from-violet-600 to-blue-600">

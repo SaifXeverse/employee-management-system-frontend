@@ -93,7 +93,7 @@ const Dashboard = () => {
               <button
                 key={card.title}
                 onClick={() => router.replace(card.href!)}
-                className="group rounded-3xl bg-white p-6 text-left shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl"
+                className="group rounded-3xl bg-white p-6 cursor-pointer text-left shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl"
               >
                 <div
                   className={`flex h-16 w-16 items-center justify-center rounded-2xl bg-linear-to-r ${card.color}`}

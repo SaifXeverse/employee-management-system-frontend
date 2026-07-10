@@ -6,20 +6,29 @@ export function proxy(request: NextRequest) {
 
   const { pathname } = request.nextUrl;
 
-  if (pathname === "/login" && employeeToken) {
-    return NextResponse.redirect(new URL("/dashboard", request.url));
+  if (pathname.startsWith("/login") && employeeToken) {
+    return NextResponse.redirect((new URL("/dashboard", request.url)));
   }
 
-  if (pathname.startsWith("/dashboard") && !employeeToken) {
+  if (
+    (pathname.startsWith("/dashboard") || pathname.startsWith("/profile")) &&
+    !employeeToken
+  ) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
-  if (pathname === "/admin/login" && adminToken) {
+  if (pathname.startsWith("/admin/login") && adminToken) {
     return NextResponse.redirect(new URL("/admin/dashboard", request.url));
   }
 
-  if (pathname.startsWith("/admin/dashboard") && !adminToken) {
-    return NextResponse.redirect(new URL("/admin/login", request.url));
+  if (
+    (pathname.startsWith("/admin/dashboard") ||
+      pathname.startsWith("/admin/employees") ||
+      pathname.startsWith("/admin/permission") ||
+      pathname.startsWith("/admin/profile")) &&
+    !adminToken
+  ) {
+    return NextResponse.redirect (new URL("/admin/login", request.url));
   }
 
   return NextResponse.next();
@@ -29,7 +38,11 @@ export const config = {
   matcher: [
     "/login",
     "/dashboard/:path*",
+    "/profile/:path*",
     "/admin/login",
     "/admin/dashboard/:path*",
+    "/admin/employees/:path*",
+    "/admin/permission/:path*",
+    "/admin/profile/:path*",
   ],
 };

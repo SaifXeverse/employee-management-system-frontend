@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import toast from "react-hot-toast";
 
 const useAuth = () => {
@@ -25,10 +25,11 @@ const useAuth = () => {
         withCredentials: true,
       });
       toast.success(toastMessage);
+      router.refresh()
       router.replace(navigate);
       router.refresh()
     } catch (error: any) {
-      toast.error(error.response?.data);
+      toast.error(error.response?.data || "The server is down");
       console.log(error.response?.data);
     }
   };
@@ -43,10 +44,11 @@ const useAuth = () => {
         },
       );
       toast.success("Logout User");
+      router.refresh()
       router.replace("/admin/login");
       router.refresh()
     } catch (error: any) {
-      toast.error(error.response?.data);
+      toast.error(error.response?.data || "The server is down");
       console.log(error.response);
     }
   };

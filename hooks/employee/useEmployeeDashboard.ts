@@ -66,7 +66,7 @@ const useEmployeeDashboard = () => {
       getEmployee();
       setOpen(false)
     } catch (error: any) {
-      toast.error(error.response?.data)
+      toast.error(error.response?.data || "The server is down")
       console.log(error.response?.data);
     }
   };
