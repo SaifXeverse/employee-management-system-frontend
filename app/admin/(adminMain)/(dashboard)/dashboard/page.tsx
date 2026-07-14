@@ -1,6 +1,5 @@
 import Dashboard from "@/components/admin/dashboard/Dashboard"
 
-
 const page = () => {
   return (
     <div>

@@ -1,27 +1,59 @@
-"use client"
+"use client";
 
 import Link from "next/link";
 import { User, Mail, Lock } from "lucide-react";
-import { FormEvent } from "react";
-import useAuth from "@/hooks/admin/useAuth";
 import SideContent from "./SideContent";
+import { useState, FormEvent } from "react";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { registerAdmin } from "@/store/slices/adminAuthSlice";
 
 const Register = () => {
-    const {handleChange, submitForm} = useAuth()
+  const dispatch = useAppDispatch();
+  const router = useRouter();
 
-    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        submitForm("register")
+  const { loading } = useAppSelector((state) => state.auth);
+
+  const [inputs, setInputs] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputs((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const result = await dispatch(registerAdmin(inputs));
+
+    if (registerAdmin.fulfilled.match(result)) {
+      toast.success("User Registered");
+      router.replace("/admin/login");
+      router.refresh();
+    } else {
+      toast.error((result.payload as string) || "Registration failed");
     }
+  };
 
   return (
-    <main className="min-h-screen grid lg:grid-cols-2 bg-slate-100">
-      <SideContent heading="Create Your Account 🚀" heading2="Join Our Platform." para="Create your account today and start managing your projects with a modern, secure and powerful dashboard." />
+    <main className="min-h-screen grid md:grid-cols-2 bg-slate-100">
+      <SideContent
+        heading="Create Your Account 🚀"
+        heading2="Join Our Platform."
+        para="Create your account today and start managing your projects with a modern, secure and powerful dashboard."
+      />
 
       <section className="flex items-center justify-center px-6 py-10">
         <div className="w-full max-w-md rounded-3xl bg-white p-8 shadow-2xl">
           <h1 className="text-center text-3xl font-bold text-slate-800">
-            Create Account
+            Create Admin Account
           </h1>
           <form onSubmit={handleSubmit} className="mt-4 space-y-2">
             <div>
@@ -69,13 +101,21 @@ const Register = () => {
                 />
               </div>
             </div>
-            <button className="h-14 cursor-pointer mt-3 w-full rounded-xl bg-linear-to-r from-violet-600 to-blue-600 font-semibold hover:to-blue-500 hover:from-violet-500 text-white transition hover:shadow-lg">
-              Create Account
+            <button
+              disabled={loading}
+              className="h-14 cursor-pointer mt-3 w-full rounded-xl bg-linear-to-r from-violet-600 to-blue-600 font-semibold hover:to-blue-500 hover:from-violet-500 text-white transition hover:shadow-lg"
+            >
+              {loading ? "Creating..." : "Create Account"}
             </button>
           </form>
           <p className="mt-4 text-center text-slate-500">
             Already have an account?{" "}
-            <Link  prefetch={false} href="/admin/login" replace className="font-semibold cursor-pointer text-violet-600 hover:text-violet-500">
+            <Link
+              prefetch={false}
+              href="/admin/login"
+              replace
+              className="font-semibold cursor-pointer text-violet-600 hover:text-violet-500"
+            >
               Login
             </Link>
           </p>

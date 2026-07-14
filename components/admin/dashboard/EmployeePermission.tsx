@@ -1,22 +1,49 @@
 "use client";
 
-import { useMemo } from "react";
 import Image from "next/image";
 import { Search, ShieldCheck, User } from "lucide-react";
-import useEmployee from "@/hooks/admin/useEmployee";
+import { useEffect, useMemo, useState } from "react";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import {
+  getInactiveEmployees,
+  updateEmployeeStatus,
+} from "@/store/slices/employeeSlice";
+import { getSocket } from "@/libs/socket";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 const EmployeePermission = () => {
-  const { employeesInactive, search, setSearch, handleUpdateInactiveEmployee } =
-    useEmployee();
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+  const { employeesInactive } = useAppSelector((state) => state.employee);
+  const [search, setSearch] = useState("");
+
+  useEffect(() => {
+    dispatch(getInactiveEmployees());
+    const socket = getSocket();
+
+    socket.on("employeeStatusChanged", () => {
+      dispatch(getInactiveEmployees());
+    });
+
+    return () => {
+      socket.off("employeeStatusChanged");
+    };
+  }, [dispatch]);
 
   const filteredEmployeesInactive = useMemo(() => {
-    return employeesInactive.filter((employeesInactive) =>
-      employeesInactive.name.toLowerCase().includes(search.toLowerCase()),
+    return employeesInactive.filter((employee) =>
+      employee.name.toLowerCase().includes(search.toLowerCase()),
     );
   }, [employeesInactive, search]);
 
   const handleStatus = async (id: number) => {
-    await handleUpdateInactiveEmployee(id);
+    await dispatch(updateEmployeeStatus(id));
+    dispatch(getInactiveEmployees());
+    toast.success("employee Activated")
+    if (employeesInactive.length === 1) {
+      router.replace("/admin/employees")
+    }
   };
 
   return (
@@ -62,7 +89,7 @@ const EmployeePermission = () => {
                 Employee
               </th>
 
-              <th className="px-6 py-4 text-left text-sm font-semibold text-slate-600">
+              <th className="px-6 py-4 text-center text-sm font-semibold text-slate-600">
                 Email
               </th>
 
@@ -111,7 +138,7 @@ const EmployeePermission = () => {
                     </div>
                   </td>
 
-                  <td className="px-6 text-sm text-slate-600">
+                  <td className="px-6 text-sm text-center text-slate-600">
                     {employee.email}
                   </td>
 

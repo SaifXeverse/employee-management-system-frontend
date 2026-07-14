@@ -2,15 +2,46 @@
 
 import Link from "next/link";
 import { Lock, Mail } from "lucide-react";
-import useAuthEmployee from "@/hooks/employee/useAuthEmployee";
+import { useState, FormEvent } from "react";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { loginEmployee } from "@/store/slices/employeeAuthSlice";
 
 const Login = () => {
-  const { handleChange, handleLogin } = useAuthEmployee();
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+
+  const { loading } = useAppSelector((state) => state.employeeAuth);
+
+  const [inputs, setInputs] = useState({
+    email: "",
+    password: "",
+  });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputs((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const result = await dispatch(loginEmployee(inputs));
+    if (loginEmployee.fulfilled.match(result)) {
+      toast.success("Login Successfully");
+      router.replace("/dashboard");
+      router.refresh();
+    } else {
+      toast.error((result.payload as string) || "Login failed");
+    }
+  };
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-[#f6f5f7] px-4 py-10">
       <div className="w-full max-w-6xl overflow-hidden rounded-3xl bg-white shadow-[0_14px_28px_rgba(0,0,0,0.25),0_10px_10px_rgba(0,0,0,0.22)]">
-        <div className="grid min-h-140 lg:grid-cols-2">
+        <div className="grid min-h-140 md:grid-cols-2">
           <div className="order-2 flex items-center justify-center p-8 lg:order-1 lg:p-16">
             <div className="w-full max-w-md">
               <h1 className="text-center text-4xl font-bold text-slate-800">
@@ -69,18 +100,17 @@ const Login = () => {
 
                 <button
                   type="submit"
-                  className="h-14 w-full cursor-pointer rounded-full bg-linear-to-r from-[#FF4B2B] to-[#FF416C] text-sm font-bold uppercase tracking-widest text-white shadow-lg transition duration-300 hover:scale-[1.02]"
+                  disabled={loading}
+                  className="h-14 w-full cursor-pointer rounded-full bg-linear-to-r from-[#FF4B2B] to-[#FF416C] text-sm font-bold uppercase tracking-widest text-white shadow-lg transition duration-300 hover:scale-[1.02] disabled:opacity-50"
                 >
-                  Sign In
+                  {loading ? "Signing In..." : "Sign In"}
                 </button>
               </form>
             </div>
           </div>
-          <div className="order-1 flex items-center justify-center bg-linear-to-r from-[#FF4B2B] to-[#FF416C] p-10 text-center text-white lg:order-2">
+          <div className="order-1 flex items-center justify-center bg-linear-to-r from-[#FF4B2B] to-[#FF416C] p-10 text-center text-white md:order-2">
             <div className="max-w-md">
-              <h2 className="text-5xl font-extrabold">
-                Hello, Friend!
-              </h2>
+              <h2 className="text-5xl font-extrabold">Hello, Friend!</h2>
 
               <p className="mt-6 text-lg leading-8 text-white/90">
                 Enter your personal details and start your journey with us.

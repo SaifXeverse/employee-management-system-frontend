@@ -1,14 +1,14 @@
 import { cookies } from "next/headers";
 import { redirect,  } from "next/navigation";
 
-export default async function Home() {
+export default async function Admin() {
   const cookieStore = await cookies();
 
-  const token = cookieStore.get("AccessTokenEmployee")?.value;
+  const token = cookieStore.get("AccessToken")?.value;
 
   if (token) {
-    redirect("/dashboard");
+    redirect("/admin/dashboard");
   } else {
-    redirect("/login");
+    redirect("/admin/login");
   }
 }

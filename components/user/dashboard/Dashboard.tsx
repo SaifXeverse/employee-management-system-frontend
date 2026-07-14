@@ -1,25 +1,45 @@
 "use client";
 
-import useAuthEmployee from "@/hooks/employee/useAuthEmployee";
-import useEmployeeDashboard from "@/hooks/employee/useEmployeeDashboard";
+// import useAuthEmployee from "@/hooks/employee/useAuthEmployee";
+// import useEmployeeDashboard from "@/hooks/employee/useEmployeeDashboard";
 import {
   User,
-  CalendarCheck,
-  ClipboardList,
-  ShieldCheck,
+  // CalendarCheck,
+  // ClipboardList,
+  // ShieldCheck,
   LogOut,
   ChevronRight,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { logoutEmployee } from "@/store/slices/employeeAuthSlice";
+import { getEmployeeProfile } from "@/store/slices/employeeDashboardSlice";
+import { useEffect } from "react";
+import { getSocket } from "@/libs/socket";
 
 const Dashboard = () => {
-  const { handleLogout } = useAuthEmployee();
-  const { employee } = useEmployeeDashboard();
+  const dispatch = useAppDispatch();
+  const { employee } = useAppSelector((state) => state.employee);
   const router = useRouter();
-  console.log(employee);
-  
 
+  useEffect(() => {
+    dispatch(getEmployeeProfile());
+    const socket = getSocket();
 
+    socket.on("employeeProfileUpdated", () => {
+      dispatch(getEmployeeProfile());
+    });
+
+    return () => {
+      socket.off("employeeProfileUpdated");
+    };
+  }, [dispatch]);
+
+  const handleLogout = async () => {
+    await dispatch(logoutEmployee());
+    router.replace("/login")
+    router.refresh();
+  };
 
   const cards = [
     {
@@ -29,27 +49,27 @@ const Dashboard = () => {
       icon: User,
       color: "from-[#FF4B2B] to-[#FF416C]",
     },
-    {
-      title: "Attendance",
-      desc: "Check your attendance history",
-      href: "/dashboard",
-      icon: CalendarCheck,
-      color: "from-sky-500 to-cyan-500",
-    },
-    {
-      title: "Leave Requests",
-      desc: "View your leave requests",
-      href: "/dashboard",
-      icon: ClipboardList,
-      color: "from-emerald-500 to-green-500",
-    },
-    {
-      title: "Permissions",
-      desc: "View your account permissions",
-      href: "/dashboard",
-      icon: ShieldCheck,
-      color: "from-violet-500 to-fuchsia-500",
-    },
+    // {
+    //   title: "Attendance",
+    //   desc: "Check your attendance history",
+    //   href: "/dashboard",
+    //   icon: CalendarCheck,
+    //   color: "from-sky-500 to-cyan-500",
+    // },
+    // {
+    //   title: "Leave Requests",
+    //   desc: "View your leave requests",
+    //   href: "/dashboard",
+    //   icon: ClipboardList,
+    //   color: "from-emerald-500 to-green-500",
+    // },
+    // {
+    //   title: "Permissions",
+    //   desc: "View your account permissions",
+    //   href: "/dashboard",
+    //   icon: ShieldCheck,
+    //   color: "from-violet-500 to-fuchsia-500",
+    // },
   ];
 
   return (
@@ -57,7 +77,7 @@ const Dashboard = () => {
       <div className="bg-linear-to-r from-[#FF4B2B] to-[#FF416C] shadow-xl">
         <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-5 px-6 py-8 md:flex-row md:items-center">
           <div>
-            <h1 className="text-4xl font-bold text-white">Welcome Back 👋</h1>
+            <h1 className="text-4xl font-bold text-white">Welcome Back</h1>
 
             <p className="mt-2 text-white/90">Employee Dashboard</p>
           </div>
@@ -75,7 +95,7 @@ const Dashboard = () => {
       <div className="mx-auto max-w-7xl px-6 py-10">
         <div className="rounded-3xl bg-white p-8 shadow-lg">
           <h2 className="text-2xl font-bold text-slate-800">
-            Hello {employee.name} 👋
+            Hello {employee?.name} 👋
           </h2>
 
           <p className="mt-3 text-slate-500">
@@ -119,10 +139,10 @@ const Dashboard = () => {
           })}
         </div>
 
-        <div className="mt-10 rounded-3xl bg-white p-8 shadow-lg">
+        {/* <div className="mt-10 rounded-3xl bg-white p-8 shadow-lg">
           <h2 className="text-2xl font-bold text-slate-800">Recent Activity</h2>
 
-          {/* <div className="mt-6 space-y-4">
+          <div className="mt-6 space-y-4">
             <div className="flex items-center justify-between rounded-2xl bg-slate-50 p-4">
               <span>✅ Logged in successfully</span>
               <span className="text-sm text-slate-500">Today</span>
@@ -137,8 +157,8 @@ const Dashboard = () => {
               <span>📝 Leave request submitted</span>
               <span className="text-sm text-slate-500">2 days ago</span>
             </div>
-          </div> */}
-        </div>
+          </div>
+        </div> */}
       </div>
     </div>
   );

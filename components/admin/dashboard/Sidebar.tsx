@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   LayoutDashboard,
   Users,
@@ -11,9 +11,10 @@ import {
   ChevronRight,
   X,
   User,
-  ClipboardClock
+  ClipboardClock,
 } from "lucide-react";
-import useAuth from "@/hooks/admin/useAuth";
+import { useAppDispatch } from "@/store/hooks";
+import { logoutAdmin } from "@/store/slices/adminAuthSlice";
 
 const menu = [
   {
@@ -49,8 +50,15 @@ type SidebarProps = {
 };
 
 const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
-  const { handleLogout } = useAuth();
+  const dispatch = useAppDispatch();
   const pathname = usePathname();
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    await dispatch(logoutAdmin());
+    router.replace("/admin/login");
+    router.refresh();
+  };
 
   const isActive = (href: string) => {
     if (href === "/admin/employees/add") {
@@ -154,6 +162,6 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
       </aside>
     </>
   );
-}
+};
 
 export default Sidebar;

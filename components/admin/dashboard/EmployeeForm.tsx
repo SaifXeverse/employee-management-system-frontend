@@ -13,21 +13,13 @@ import {
   Shield,
 } from "lucide-react";
 import { ChangeEvent, FormEvent } from "react";
-
-export type EmployeeInputs = {
-  img: string;
-  name: string;
-  email: string;
-  password: string;
-  department: string;
-  status: string;
-  salary: number | string;
-};
+import { Employee } from "@/types/employeeType";
 
 type Props = {
   type: "add" | "edit";
-  inputs: EmployeeInputs;
+  inputs: Employee;
   handleUpload: (e: React.ChangeEvent<HTMLInputElement>) => Promise<void>;
+  handleDelete: () => Promise<void>;
   imageUrl: string;
   loading: boolean;
   handleChange: (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
@@ -38,13 +30,12 @@ const EmployeeForm = ({
   type,
   inputs,
   handleUpload,
+  handleDelete,
   imageUrl,
   loading,
   handleChange,
   handleSubmit,
-}: Props) => {
-  console.log(type);
-  
+}: Props) => {  
   return (
     <div className="mx-auto w-full max-w-5xl px-4 sm:px-6 lg:px-0">
       <div className="mb-8 flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
@@ -61,7 +52,7 @@ const EmployeeForm = ({
         </div>
 
         <Link
-          prefetch={false}
+          onClick={handleDelete}
           href="/admin/employees"
           replace
           className="flex w-full items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-5 py-3 text-slate-700 shadow-sm transition hover:bg-slate-50 sm:w-auto"
@@ -219,6 +210,7 @@ const EmployeeForm = ({
                 className="ml-3 w-full min-w-0 bg-transparent text-sm outline-none sm:text-base"
                 required
               >
+                <option value="">Select Status</option>
                 <option value="active">Active</option>
                 <option value="inactive">Inactive</option>
               </select>
@@ -248,6 +240,7 @@ const EmployeeForm = ({
           <Link
             prefetch={false}
             href="/admin/employees"
+            onClick={handleDelete}
             replace
             className="w-full rounded-xl border border-slate-300 px-6 py-3 text-center font-medium text-slate-700 transition hover:bg-slate-100 sm:w-auto"
           >

@@ -3,27 +3,56 @@
 import Link from "next/link";
 import { Mail, Lock } from "lucide-react";
 import { FormEvent } from "react";
-import useAuth from "@/hooks/admin/useAuth";
 import SideContent from "./SideContent";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { loginAdmin } from "@/store/slices/adminAuthSlice";
 
 const Login = () => {
-    const {handleChange, submitForm} = useAuth()
+  const dispatch = useAppDispatch();
+  const router = useRouter();
 
-    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        submitForm("login")
+  const { loading } = useAppSelector((state) => state.auth);
+
+  const [inputs, setInputs] = useState({
+    email: "",
+    password: "",
+  });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputs((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const result = await dispatch(loginAdmin(inputs));
+
+    if (loginAdmin.fulfilled.match(result)) {
+      toast.success("Login Successfully");
+      router.replace("/admin/dashboard");
+      router.refresh();
+    } else {
+      toast.error((result.payload as string) || "Login failed");
     }
-    
+  };
+
   return (
-    <main className="min-h-screen grid lg:grid-cols-2 bg-slate-100">
-      <SideContent heading="Welcome 👋" heading2="Welcome Back." para="Login to access your dashboard and continue managing your projects with ease." />
+    <main className="min-h-screen grid md:grid-cols-2 bg-slate-100">
+      <SideContent
+        heading="Welcome"
+        heading2="Welcome Back."
+        para="Login to access your dashboard and continue managing your projects with ease."
+      />
 
       <section className="flex items-center justify-center px-6 py-10">
-
         <div className="w-full max-w-md bg-white rounded-3xl shadow-2xl p-8">
-
           <h1 className="text-3xl font-bold text-center text-slate-800">
-            Login
+            Admin Login
           </h1>
 
           <form onSubmit={handleSubmit} className="mt-4 space-y-2">
@@ -33,7 +62,6 @@ const Login = () => {
               </label>
 
               <div className="mt-1 flex items-center rounded-xl border bg-slate-50 px-4 h-14 focus-within:border-violet-600">
-
                 <Mail size={18} className="text-slate-400" />
                 <input
                   type="email"
@@ -49,7 +77,6 @@ const Login = () => {
                 Password
               </label>
               <div className="mt-1 flex items-center rounded-xl border bg-slate-50 px-4 h-14 focus-within:border-violet-600">
-
                 <Lock size={18} className="text-slate-400" />
                 <input
                   type="password"
@@ -61,15 +88,22 @@ const Login = () => {
               </div>
             </div>
 
-            <button className="h-14 mt-3 w-full cursor-pointer rounded-xl bg-linear-to-r from-violet-600 to-blue-600 hover:to-blue-500 hover:from-violet-500 font-semibold text-white transition hover:shadow-lg">
-              Login
+            <button
+              disabled={loading}
+              className="h-14 mt-3 w-full cursor-pointer rounded-xl bg-linear-to-r from-violet-600 to-blue-600 hover:to-blue-500 hover:from-violet-500 font-semibold text-white transition hover:shadow-lg disabled:opacity-50"
+            >
+              {loading ? "Logging in..." : "Login"}
             </button>
-
           </form>
 
           <p className="text-center mt-4 text-slate-500">
-            Don't have an account? {" "}
-            <Link  prefetch={false} href="/admin/register" replace className="font-semibold cursor-pointer text-violet-600 hover:text-violet-500">
+            Don't have an account?{" "}
+            <Link
+              prefetch={false}
+              href="/admin/register"
+              replace
+              className="font-semibold cursor-pointer text-violet-600 hover:text-violet-500"
+            >
               Register
             </Link>
           </p>

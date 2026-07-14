@@ -12,20 +12,20 @@ import {
   User,
   BadgeCheck,
 } from "lucide-react";
-
-import useEmployee from "@/hooks/admin/useEmployee";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { getEmployee } from "@/store/slices/employeeSlice";
 import Image from "next/image";
 
 const EmployeeDetails = () => {
   const params = useParams();
-
-  const { inputs, getEmployee } = useEmployee();
+  const dispatch = useAppDispatch();
+  const { employee } = useAppSelector((state) => state.employee);
 
   useEffect(() => {
     if (params.id) {
-      getEmployee(Number(params.id));
+      dispatch(getEmployee(Number(params.id)));
     }
-  }, [params.id]);
+  }, [params.id, dispatch]);
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-6">
@@ -54,13 +54,14 @@ const EmployeeDetails = () => {
         <div className="bg-linear-to-r from-violet-600 via-indigo-600 to-blue-600 px-6 py-8">
           <div className="flex flex-col items-center text-center">
             <div className="relative h-28 w-28 shrink-0 overflow-hidden rounded-full border-4 border-violet-200 bg-slate-100 shadow-md">
-              {inputs.img ? (
+              {employee?.img ? (
                 <Image
-                  src={inputs.img}
-                  alt={inputs.name}
+                  src={employee?.img}
+                  alt={employee?.name}
                   loading="eager"
-                  fill
-                  className="object-cover"
+                  width={200}
+                  height={200}
+                  className="w-full h-full object-cover"
                 />
               ) : (
                 <div className="flex h-full w-full items-center justify-center bg-linear-to-r from-violet-600 to-blue-600">
@@ -70,11 +71,11 @@ const EmployeeDetails = () => {
             </div>
 
             <h2 className="mt-4 text-2xl font-bold text-white">
-              {inputs.name.toUpperCase()}
+              {employee?.name.toUpperCase()}
             </h2>
 
             <p className="mt-1 break-all text-sm text-white/80">
-              {inputs.email}
+              {employee?.email}
             </p>
           </div>
         </div>
@@ -87,7 +88,7 @@ const EmployeeDetails = () => {
             <p className="text-sm text-slate-500">Email Address</p>
 
             <h3 className="mt-2 break-all text-base font-semibold text-slate-900">
-              {inputs.email}
+              {employee?.email}
             </h3>
           </div>
 
@@ -99,7 +100,7 @@ const EmployeeDetails = () => {
             <p className="text-sm text-slate-500">Department</p>
 
             <span className="mt-3 inline-flex rounded-full bg-violet-100 px-4 py-2 text-sm font-semibold text-violet-700">
-              {inputs.department}
+              {employee?.department}
             </span>
           </div>
 
@@ -111,7 +112,7 @@ const EmployeeDetails = () => {
             <p className="text-sm text-slate-500">Salary</p>
 
             <h3 className="mt-2 text-2xl font-bold text-green-600">
-              ${inputs.salary}
+              ${employee?.salary}
             </h3>
           </div>
 
@@ -150,6 +151,6 @@ const EmployeeDetails = () => {
       </div>
     </div>
   );
-}
+};
 
 export default EmployeeDetails;

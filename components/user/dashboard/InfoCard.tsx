@@ -18,6 +18,6 @@ const InfoCard = ({
       <h3 className="mt-2 text-lg font-semibold text-slate-800">{value}</h3>
     </div>
   );
-}
+};
 
 export default InfoCard;

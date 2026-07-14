@@ -11,20 +11,71 @@ import {
   UserPlus,
   Users,
   User,
+  Trash2Icon,
 } from "lucide-react";
-
-import useEmployee from "@/hooks/admin/useEmployee";
+import { useMemo, useState, useEffect } from "react";
+import useUpload from "@/hooks/useUpload";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { getEmployees, deleteEmployee } from "@/store/slices/employeeSlice";
+import { getSocket } from "@/libs/socket";
 
 const EmployeeTable = () => {
-  const {
-    employees,
-    handleDelete,
-    filteredEmployees,
-    setSearch,
-    setSortAsc,
-    search,
-    sortAsc,
-  } = useEmployee();
+  const dispatch = useAppDispatch();
+  const { employees } = useAppSelector((state) => state.employee);
+  const [search, setSearch] = useState("");
+  const [sortAsc, setSortAsc] = useState(true);
+
+  useEffect(() => {
+    dispatch(getEmployees());
+    const socket = getSocket();
+
+    socket.on("employeeCreated", () => {
+      dispatch(getEmployees());
+    });
+
+    socket.on("employeeUpdated", () => {
+      dispatch(getEmployees());
+    });
+
+    socket.on("employeeDeleted", () => {
+      dispatch(getEmployees());
+    });
+
+    socket.on("employeeStatusChanged", () => {
+      dispatch(getEmployees());
+    });
+
+    return () => {
+      socket.off("employeeCreated");
+      socket.off("employeeUpdated");
+      socket.off("employeeDeleted");
+      socket.off("employeeStatusChanged");
+    };
+  }, [dispatch]);
+
+  const { handleDelete } = useUpload((url, publicId) => {
+    console.log("Cloudinary image is delete " + url + " " + publicId);
+  });
+
+  const filteredEmployees = useMemo(() => {
+    return employees
+      .filter((employee) => {
+        const employeeName = employee.name || "";
+        return employeeName.toLowerCase().includes(search.toLowerCase());
+      })
+      .sort((a, b) =>
+        sortAsc
+          ? Number(a.salary) - Number(b.salary)
+          : Number(b.salary) - Number(a.salary),
+      );
+  }, [employees, search, sortAsc]);
+
+  const handleDeleted = async (imgId: string, id: number) => {
+    if (imgId) {
+      handleDelete(imgId);
+    }
+    await dispatch(deleteEmployee(id));
+  };
 
   return (
     <div className="mx-auto w-full max-w-7xl overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
@@ -82,19 +133,19 @@ const EmployeeTable = () => {
         <table className="w-full">
           <thead>
             <tr className="border-b border-slate-200 bg-slate-50">
-              <th className="px-5 py-4 text-left text-sm font-semibold text-slate-600">
+              <th className="px-5 text-left py-4 text-sm font-semibold text-slate-600">
                 Employee
               </th>
-              <th className="px-5 py-4 text-left text-sm font-semibold text-slate-600">
+              <th className="px-5 py-4 text-center text-sm font-semibold text-slate-600">
                 Email
               </th>
-              <th className="px-5 py-4 text-left text-sm font-semibold text-slate-600">
+              <th className="px-5 py-4 text-center text-sm font-semibold text-slate-600">
                 Department
               </th>
-              <th className="px-5 py-4 text-left text-sm font-semibold text-slate-600">
+              <th className="px-5 py-4 text-center text-sm font-semibold text-slate-600">
                 Status
               </th>
-              <th className="px-5 py-4 text-left text-sm font-semibold text-slate-600">
+              <th className="px-5 py-4 text-center text-sm font-semibold text-slate-600">
                 Salary
               </th>
               <th className="px-5 py-4 text-center text-sm font-semibold text-slate-600">
@@ -118,7 +169,7 @@ const EmployeeTable = () => {
             ) : (
               filteredEmployees.map((employee) => (
                 <tr
-                  key={employee.id}
+                  key={employee.id || 1}
                   className="border-b border-slate-100 transition hover:bg-violet-50"
                 >
                   <td className="px-5 py-4">
@@ -150,17 +201,17 @@ const EmployeeTable = () => {
                     </div>
                   </td>
 
-                  <td className="px-5 text-sm text-slate-600">
+                  <td className="px-5 text-center text-sm text-slate-600">
                     {employee.email}
                   </td>
 
-                  <td className="px-5">
+                  <td className="px-5 text-center">
                     <span className="rounded-full bg-blue-100 px-3 py-1 text-xs font-medium text-blue-700">
                       {employee.department || "Unassigned"}
                     </span>
                   </td>
 
-                  <td className="px-5">
+                  <td className="px-5 text-center">
                     <span
                       className={`rounded-full px-3 py-1 text-xs font-semibold ${
                         employee.status === "active"
@@ -172,7 +223,7 @@ const EmployeeTable = () => {
                     </span>
                   </td>
 
-                  <td className="px-5">
+                  <td className="px-5 text-center">
                     <span className="rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700">
                       ${employee.salary || "0.00"}
                     </span>
@@ -200,7 +251,7 @@ const EmployeeTable = () => {
 
                       <button
                         onClick={() =>
-                          handleDelete(employee.id!, employee.name)
+                          handleDeleted(employee?.imgId!, employee?.id!)
                         }
                         className="rounded-lg bg-red-100 p-2 text-red-600 transition hover:bg-red-200"
                       >
@@ -230,7 +281,7 @@ const EmployeeTable = () => {
         ) : (
           filteredEmployees.map((employee) => (
             <div
-              key={employee.id}
+              key={employee.id || 1}
               className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:shadow-md"
             >
               <div className="flex items-center gap-4">
@@ -312,7 +363,7 @@ const EmployeeTable = () => {
                 </Link>
 
                 <button
-                  onClick={() => handleDelete(employee.id!, employee.name)}
+                  onClick={() => handleDeleted(employee?.imgId!, employee?.id!)}
                   className="rounded-lg bg-red-100 p-2 text-red-600 transition hover:bg-red-200"
                 >
                   <Trash2 size={17} />

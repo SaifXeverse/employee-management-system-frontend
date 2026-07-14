@@ -1,15 +1,42 @@
 "use client";
 
-import useEmployee from "@/hooks/admin/useEmployee";
-import {
-  Users,
-  Building2,
-  DollarSign,
-  TrendingUp,
-} from "lucide-react";
+import { useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { getEmployees } from "@/store/slices/employeeSlice";
+import { Users, Building2, DollarSign, TrendingUp } from "lucide-react";
+import { getSocket } from "@/libs/socket";
 
 const Dashboard = () => {
-  const { employees } = useEmployee();
+  const dispatch = useAppDispatch();
+  const { employees } = useAppSelector((state) => state.employee);
+
+  useEffect(() => {
+    dispatch(getEmployees());
+    const socket = getSocket();
+
+    socket.on("employeeCreated", () => {
+      dispatch(getEmployees());
+    });
+
+    socket.on("employeeUpdated", () => {
+      dispatch(getEmployees());
+    });
+
+    socket.on("employeeDeleted", () => {
+      dispatch(getEmployees());
+    });
+
+    socket.on("employeeStatusChanged", () => {
+      dispatch(getEmployees());
+    });
+
+    return () => {
+      socket.off("employeeCreated");
+      socket.off("employeeUpdated");
+      socket.off("employeeDeleted");
+      socket.off("employeeStatusChanged");
+    };
+  }, [dispatch]);
 
   const totalEmployees = employees.length;
 
@@ -145,6 +172,6 @@ const Dashboard = () => {
       </div>
     </div>
   );
-}
+};
 
 export default Dashboard;

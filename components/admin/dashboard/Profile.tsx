@@ -4,20 +4,74 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowLeft, Mail, Pencil, User, Camera, Save, X } from "lucide-react";
 import useUpload from "@/hooks/useUpload";
-import useProfile from "@/hooks/admin/useProfile";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { getProfile, updateProfile } from "@/store/slices/profileSlice";
+import { useEffect, useState } from "react";
+import { getSocket } from "@/libs/socket";
 
 const Profile = () => {
-  const {
-    userInput,
-    setUserInput,
-    isEditing,
-    setIsEditing,
-    handleCancel,
-    handleSave,
-  } = useProfile();
-  const { handleUpload, loading } = useUpload((url) => {
-    setUserInput((prev) => ({ ...prev, img: url }));
+  const dispatch = useAppDispatch();
+  const { user } = useAppSelector((state) => state.profile);
+  const [isEditing, setIsEditing] = useState(false);
+  const [userInput, setUserInput] = useState({
+    img: "",
+    imgId: "",
+    name: "",
+    email: "",
   });
+
+  useEffect(() => {
+    dispatch(getProfile());
+
+    const socket = getSocket();
+
+    socket.on("userProfileUpdate", () => {
+      dispatch(getProfile())
+    });
+
+    return () => {
+      socket.off("userProfileUpdate");
+    };
+  }, [dispatch]);
+  console.log(user);
+  
+
+  useEffect(() => {
+    if (user) {
+      setUserInput({
+        img: user.img || "",
+        imgId: user.imgId || "",
+        name: user.name || "",
+        email: user.email || "",
+      });
+    }
+  }, [user]);
+
+  const { handleUpload, loading, handleDelete } = useUpload((url, publicId) => {
+    setUserInput((prev) => ({
+      ...prev,
+      img: url,
+      imgId: publicId
+    }));
+  });
+
+  const handleSave = async () => {
+    if (userInput.img !== user?.img) {
+      handleDelete(user?.imgId)
+    }
+    await dispatch(updateProfile(userInput));
+    setIsEditing(false);    
+  };
+
+  const handleCancel = () => {
+    setUserInput({
+      img: user?.img || "",
+      imgId: user?.imgId || "",
+      name: user?.name || "",
+      email: user?.email || "",
+    });
+    setIsEditing(false);
+  };
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-3">
@@ -64,7 +118,7 @@ const Profile = () => {
               )}
 
               {loading && (
-                <div className="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+                <div className="absolute rounded-full inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm">
                   <div className="h-10 w-10 animate-spin rounded-full border-4 border-white border-t-transparent"></div>
                 </div>
               )}
@@ -143,7 +197,10 @@ const Profile = () => {
               </button>
 
               <button
-                onClick={handleCancel}
+                onClick={() => {
+                  handleCancel();
+                  handleDelete();
+                }}
                 className="inline-flex cursor-pointer items-center gap-2 rounded-xl bg-slate-200 px-6 py-3 font-semibold text-slate-700 transition hover:bg-slate-300"
               >
                 <X size={18} />
