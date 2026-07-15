@@ -1,25 +1,18 @@
 "use client";
 
-// import useAuthEmployee from "@/hooks/employee/useAuthEmployee";
-// import useEmployeeDashboard from "@/hooks/employee/useEmployeeDashboard";
-import {
-  User,
-  // CalendarCheck,
-  // ClipboardList,
-  // ShieldCheck,
-  LogOut,
-  ChevronRight,
-} from "lucide-react";
+import { User, LogOut, ChevronRight, FileUserIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { logoutEmployee } from "@/store/slices/employeeAuthSlice";
 import { getEmployeeProfile } from "@/store/slices/employeeDashboardSlice";
 import { useEffect } from "react";
 import { getSocket } from "@/libs/socket";
+import { AddResumeModal } from "./modal/AddResumeModal";
+import { ResumeViewModal } from "./modal/ResumeViewModal";
 
 const Dashboard = () => {
   const dispatch = useAppDispatch();
-  const { employee } = useAppSelector((state) => state.employee);
+  const { employee } = useAppSelector((state) => state.employeeDashboard);
   const router = useRouter();
 
   useEffect(() => {
@@ -37,54 +30,22 @@ const Dashboard = () => {
 
   const handleLogout = async () => {
     await dispatch(logoutEmployee());
-    router.replace("/login")
+    router.replace("/login");
     router.refresh();
   };
 
-  const cards = [
-    {
-      title: "My Profile",
-      desc: "View & update your profile",
-      href: "/profile",
-      icon: User,
-      color: "from-[#FF4B2B] to-[#FF416C]",
-    },
-    // {
-    //   title: "Attendance",
-    //   desc: "Check your attendance history",
-    //   href: "/dashboard",
-    //   icon: CalendarCheck,
-    //   color: "from-sky-500 to-cyan-500",
-    // },
-    // {
-    //   title: "Leave Requests",
-    //   desc: "View your leave requests",
-    //   href: "/dashboard",
-    //   icon: ClipboardList,
-    //   color: "from-emerald-500 to-green-500",
-    // },
-    // {
-    //   title: "Permissions",
-    //   desc: "View your account permissions",
-    //   href: "/dashboard",
-    //   icon: ShieldCheck,
-    //   color: "from-violet-500 to-fuchsia-500",
-    // },
-  ];
-
   return (
     <div className="min-h-screen bg-slate-100">
-      <div className="bg-linear-to-r from-[#FF4B2B] to-[#FF416C] shadow-xl">
+      <div className="bg-linear-to-r from-slate-900 via-slate-800 to-blue-900 shadow-lg">
         <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-5 px-6 py-8 md:flex-row md:items-center">
           <div>
             <h1 className="text-4xl font-bold text-white">Welcome Back</h1>
-
-            <p className="mt-2 text-white/90">Employee Dashboard</p>
+            <p className="mt-2 text-slate-300">Employee Dashboard</p>
           </div>
 
           <button
             onClick={handleLogout}
-            className="flex items-center gap-2 rounded-full border border-white px-6 py-3 font-semibold text-white transition hover:bg-white hover:text-[#FF416C]"
+            className="flex cursor-pointer items-center gap-2 rounded-xl border border-white/30 bg-white/10 px-6 py-3 font-semibold text-white backdrop-blur transition hover:bg-white hover:text-slate-900"
           >
             <LogOut size={18} />
             Logout
@@ -93,72 +54,41 @@ const Dashboard = () => {
       </div>
 
       <div className="mx-auto max-w-7xl px-6 py-10">
-        <div className="rounded-3xl bg-white p-8 shadow-lg">
-          <h2 className="text-2xl font-bold text-slate-800">
-            Hello {employee?.name} 👋
+        <div className="rounded-3xl border border-slate-200 bg-white p-8 shadow-lg">
+          <h2 className="text-3xl font-bold text-slate-800">
+            Hello, {employee?.name} 👋
           </h2>
 
-          <p className="mt-3 text-slate-500">
-            Welcome to your employee portal. From here you can manage your
-            profile, view attendance, check leave requests and review your
-            permissions.
+          <p className="mt-3 leading-7 text-slate-500">
+            Welcome to your employee portal. Manage your profile, attendance,
+            leave requests and account settings from one place.
           </p>
         </div>
-
         <div className="mt-8 grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
-          {cards.map((card) => {
-            const Icon = card.icon;
-
-            return (
-              <button
-                key={card.title}
-                onClick={() => router.replace(card.href!)}
-                className="group rounded-3xl bg-white p-6 cursor-pointer text-left shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl"
-              >
-                <div
-                  className={`flex h-16 w-16 items-center justify-center rounded-2xl bg-linear-to-r ${card.color}`}
-                >
-                  <Icon size={30} className="text-white" />
-                </div>
-
-                <h3 className="mt-6 text-xl font-bold text-slate-800">
-                  {card.title}
-                </h3>
-
-                <p className="mt-2 text-sm text-slate-500">{card.desc}</p>
-
-                <div className="mt-6 flex items-center gap-2 font-semibold text-[#FF416C]">
-                  Open
-                  <ChevronRight
-                    size={18}
-                    className="transition group-hover:translate-x-1"
-                  />
-                </div>
-              </button>
-            );
-          })}
+          <button
+            onClick={() => router.replace("/profile")}
+            className="cursor-pointer rounded-2xl border border-slate-200 bg-white p-6 text-left shadow-md transition-all duration-300 hover:-translate-y-2 hover:border-blue-500 hover:shadow-xl"
+          >
+            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-[#1c3059d7] transition hover:bg-[#1c3059]">
+              <User size={30} className="text-white" />
+            </div>
+            <h3 className="mt-6 text-xl font-semibold text-slate-800">
+              My Profile
+            </h3>
+            <p className="mt-2 text-sm leading-6 text-slate-500">
+              View & update your profile
+            </p>
+            <div className="mt-6 flex items-center gap-2 font-semibold text-[#1c3059]">
+              Open
+              <ChevronRight
+                size={18}
+                className="transition-transform duration-300 group-hover:translate-x-1"
+              />
+            </div>
+          </button>
+          <AddResumeModal />
+          <ResumeViewModal />
         </div>
-
-        {/* <div className="mt-10 rounded-3xl bg-white p-8 shadow-lg">
-          <h2 className="text-2xl font-bold text-slate-800">Recent Activity</h2>
-
-          <div className="mt-6 space-y-4">
-            <div className="flex items-center justify-between rounded-2xl bg-slate-50 p-4">
-              <span>✅ Logged in successfully</span>
-              <span className="text-sm text-slate-500">Today</span>
-            </div>
-
-            <div className="flex items-center justify-between rounded-2xl bg-slate-50 p-4">
-              <span>📄 Profile updated</span>
-              <span className="text-sm text-slate-500">Yesterday</span>
-            </div>
-
-            <div className="flex items-center justify-between rounded-2xl bg-slate-50 p-4">
-              <span>📝 Leave request submitted</span>
-              <span className="text-sm text-slate-500">2 days ago</span>
-            </div>
-          </div>
-        </div> */}
       </div>
     </div>
   );

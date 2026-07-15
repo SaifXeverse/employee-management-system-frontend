@@ -37,22 +37,24 @@ const Register = () => {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[#f6f5f7] px-4 py-5">
-      <div className="w-full max-w-6xl overflow-hidden rounded-3xl bg-white shadow-[0_14px_28px_rgba(0,0,0,0.25),0_10px_10px_rgba(0,0,0,0.22)]">
+    <div className="flex min-h-screen items-center justify-center bg-slate-100 px-4 py-2">
+      <div className="w-full max-w-6xl overflow-hidden rounded-3xl bg-white shadow-2xl">
         <div className="grid min-h-140 md:grid-cols-2">
-          <div className="order-1 flex items-center justify-center bg-linear-to-r from-[#FF4B2B] to-[#FF416C] p-10 text-center text-white">
+          <div className="order-1 flex items-center justify-center bg-linear-to-br from-slate-900 via-slate-800 to-blue-900 p-10 text-center text-white">
             <div className="max-w-md">
-              <h2 className="text-5xl font-extrabold">
+              <h2 className="text-5xl font-bold leading-tight">
                 Welcome
                 <br />
-                Back!
+                Back
               </h2>
-              <p className="mt-6 text-lg leading-8 text-white/90">
-                To stay connected with us please login with your personal
-                information.
+
+              <p className="mt-6 text-lg leading-8 text-slate-300">
+                Already have an account? Sign in to continue and access your
+                employee dashboard.
               </p>
+
               <Link href="/login" replace>
-                <button className="mt-10 rounded-full border border-white px-12 py-3 text-sm font-bold uppercase tracking-[3px] text-white transition duration-300 hover:bg-white hover:text-[#FF416C]">
+                <button className="mt-10 rounded-xl border border-white px-10 py-3 text-sm font-semibold uppercase tracking-wider transition-all duration-300 hover:bg-white hover:text-slate-900">
                   Sign In
                 </button>
               </Link>
@@ -63,22 +65,26 @@ const Register = () => {
               <h1 className="text-center text-4xl font-bold text-slate-800">
                 Create Account
               </h1>
+
               <p className="mt-3 text-center text-sm text-slate-500">
-                Create your employee account to get started
+                Create your employee account to get started.
               </p>
-              <form onSubmit={handleRegister} className="mt-10 space-y-5">
+
+              <form onSubmit={handleRegister} className="mt-10 space-y-6">
                 <div>
                   <label className="mb-2 block text-sm font-semibold text-slate-700">
                     Full Name
                   </label>
-                  <div className="flex h-14 items-center rounded-xl border border-slate-200 bg-slate-50 px-4 transition focus-within:border-[#FF4B2B]">
+
+                  <div className="flex h-14 items-center rounded-xl border border-slate-300 bg-white px-4 transition-all duration-200 focus-within:border-blue-600 focus-within:ring-4 focus-within:ring-blue-100">
                     <User size={18} className="text-slate-400" />
+
                     <input
                       type="text"
                       name="name"
                       onChange={handleChange}
-                      placeholder="Saif khan"
-                      className="ml-3 w-full bg-transparent outline-none placeholder:text-slate-400"
+                      placeholder="John Doe"
+                      className="ml-3 w-full bg-transparent text-slate-700 outline-none placeholder:text-slate-400"
                     />
                   </div>
                 </div>
@@ -86,14 +92,16 @@ const Register = () => {
                   <label className="mb-2 block text-sm font-semibold text-slate-700">
                     Email Address
                   </label>
-                  <div className="flex h-14 items-center rounded-xl border border-slate-200 bg-slate-50 px-4 transition focus-within:border-[#FF4B2B]">
+
+                  <div className="flex h-14 items-center rounded-xl border border-slate-300 bg-white px-4 transition-all duration-200 focus-within:border-blue-600 focus-within:ring-4 focus-within:ring-blue-100">
                     <Mail size={18} className="text-slate-400" />
+
                     <input
                       type="email"
                       name="email"
                       onChange={handleChange}
                       placeholder="employee@example.com"
-                      className="ml-3 w-full bg-transparent outline-none placeholder:text-slate-400"
+                      className="ml-3 w-full bg-transparent text-slate-700 outline-none placeholder:text-slate-400"
                     />
                   </div>
                 </div>
@@ -101,21 +109,23 @@ const Register = () => {
                   <label className="mb-2 block text-sm font-semibold text-slate-700">
                     Password
                   </label>
-                  <div className="flex h-14 items-center rounded-xl border border-slate-200 bg-slate-50 px-4 transition focus-within:border-[#FF4B2B]">
+
+                  <div className="flex h-14 items-center rounded-xl border border-slate-300 bg-white px-4 transition-all duration-200 focus-within:border-blue-600 focus-within:ring-4 focus-within:ring-blue-100">
                     <Lock size={18} className="text-slate-400" />
+
                     <input
                       type="password"
                       name="password"
                       onChange={handleChange}
-                      placeholder="********"
-                      className="ml-3 w-full bg-transparent outline-none placeholder:text-slate-400"
+                      placeholder="••••••••"
+                      className="ml-3 w-full bg-transparent text-slate-700 outline-none placeholder:text-slate-400"
                     />
                   </div>
                 </div>
                 <button
                   type="submit"
                   disabled={loading}
-                  className="h-14 w-full cursor-pointer rounded-full bg-linear-to-r from-[#FF4B2B] to-[#FF416C] text-sm font-bold uppercase tracking-widest text-white shadow-lg transition duration-300 hover:scale-[1.02] disabled:opacity-50"
+                  className="h-14 w-full rounded-xl bg-[#1c3059] text-sm font-semibold uppercase tracking-wider text-white shadow-lg transition-all duration-300 hover:bg-[#16284b] hover:shadow-xl disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   {loading ? "Creating..." : "Create Account"}
                 </button>

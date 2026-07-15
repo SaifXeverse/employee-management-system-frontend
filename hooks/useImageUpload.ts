@@ -14,7 +14,7 @@ const useUpload = (onSuccess: (url: string, publicId: string) => void) => {
     formData.append("file", file);
 
     try {
-      const res = await fetch("/api/upload", {
+      const res = await fetch("/api/uploadImage", {
         method: "POST",
         body: formData,
       });
@@ -36,7 +36,7 @@ const useUpload = (onSuccess: (url: string, publicId: string) => void) => {
 
     setLoading(true);
     try {
-      const res = await fetch("/api/upload", {
+      const res = await fetch("/api/uploadImage", {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ publicId: idToDelete }),

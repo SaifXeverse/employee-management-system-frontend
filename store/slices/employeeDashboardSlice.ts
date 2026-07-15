@@ -1,9 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
   getEmployeeProfileApi,
+  resumeUploadApi,
   updateEmployeeProfileApi,
 } from "@/services/employeeDashboardApi";
-import { EmployeeDashboard } from "@/types/employeeDashboard";
+import { EmployeeDashboard, EmployeeResume } from "@/types/employeeDashboard";
 
 interface EmployeeDashboardState {
   employee: EmployeeDashboard | null;
@@ -31,6 +32,17 @@ export const updateEmployeeProfile = createAsyncThunk(
   },
 );
 
+export const resumeUpload = createAsyncThunk(
+  "employeeDashboard/upload",
+  async (data: EmployeeResume, { rejectWithValue }) => {
+    try {
+      return await resumeUploadApi(data);
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || "Upload failed");
+    }
+  },
+);
+
 const employeeDashboardSlice = createSlice({
   name: "employeeDashboard",
   initialState,
@@ -43,6 +55,14 @@ const employeeDashboardSlice = createSlice({
 
       .addCase(updateEmployeeProfile.fulfilled, (state, action) => {
         state.employee = action.payload;
+      })
+
+      .addCase(resumeUpload.fulfilled, (state, action) => {
+        state.employee = action.payload;
+        // if (state.employee) {
+        //   state.employee.resume = action.payload.resume;
+        //   state.employee.resumeId = action.payload.resumeId;
+        // }
       });
   },
 });

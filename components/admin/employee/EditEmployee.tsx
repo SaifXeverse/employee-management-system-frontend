@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { getEmployee, updateEmployee } from "@/store/slices/employeeSlice";
 import { Employee } from "@/types/employeeType";
 import { useParams, useRouter } from "next/navigation";
-import useUpload from "@/hooks/useUpload";
+import useUpload from "@/hooks/useImageUpload";
 import EmployeeForm from "../dashboard/EmployeeForm";
 import toast from "react-hot-toast";
 

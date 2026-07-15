@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowLeft, Mail, Pencil, User, Camera, Save, X } from "lucide-react";
-import useUpload from "@/hooks/useUpload";
+import useUpload from "@/hooks/useImageUpload";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { getProfile, updateProfile } from "@/store/slices/profileSlice";
 import { useEffect, useState } from "react";

@@ -19,7 +19,7 @@ export async function POST(req: Request) {
 
   return new Promise((resolve) => {
     const uploadStream = cloudinary.uploader.upload_stream(
-      { folder: "products" },
+      { folder: "products", resource_type: "auto" },
       (error, result) => {
         if (error) {
           resolve(NextResponse.json({ error }, { status: 500 }));

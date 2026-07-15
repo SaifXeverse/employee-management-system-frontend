@@ -6,14 +6,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-
-import {
-  Camera,
-  Mail,
-  User,
-  Save,
-} from "lucide-react";
-
+import { Camera, Mail, User, Save } from "lucide-react";
 import { ChangeEvent } from "react";
 
 type Employee = {
@@ -54,20 +47,17 @@ const EditProfileModal = ({
     <Dialog open={open} onOpenChange={(value) => !value && onClose()}>
       <DialogContent
         showCloseButton={false}
-        className="min-w-lg p-0 rounded-3xl overflow-hidden border-0"
+        className="min-w-lg overflow-hidden rounded-3xl border-0 p-0 shadow-2xl"
       >
-        <DialogHeader className="bg-linear-to-r items-center from-[#FF4B2B] to-[#FF416C] p-6">
-          <div className="">
-            <DialogTitle className="text-3xl font-bold text-white">
-              Edit Profile
-            </DialogTitle>
-          </div>
+        <DialogHeader className="items-center bg-linear-to-r from-slate-900 via-slate-800 to-blue-900 p-6">
+          <DialogTitle className="text-3xl font-bold text-white">
+            Edit Profile
+          </DialogTitle>
         </DialogHeader>
-
         <div className="max-h-[75vh] overflow-y-auto p-8">
           <div className="mb-8 flex justify-center">
             <div className="relative">
-              <div className="relative h-28 w-28 overflow-hidden rounded-full bg-slate-200 shadow-lg">
+              <div className="relative h-28 w-28 overflow-hidden rounded-full border-4 border-white bg-slate-200 shadow-xl">
                 {employeeInput.img || imageUrl ? (
                   <img
                     src={employeeInput.img || imageUrl}
@@ -75,21 +65,21 @@ const EditProfileModal = ({
                     className="h-full w-full object-cover"
                   />
                 ) : (
-                  <div className="flex h-full w-full items-center rounded-full justify-center bg-slate-100">
+                  <div className="flex h-full w-full items-center justify-center bg-slate-100">
                     <User size={48} className="text-slate-400" />
                   </div>
                 )}
 
                 {loading && (
-                  <div className="absolute inset-0 flex items-center rounded-full justify-center bg-black/40 backdrop-blur-sm">
-                    <div className="h-10 w-10 animate-spin rounded-full border-4 border-[#FF416C] border-t-transparent" />
+                  <div className="absolute inset-0 flex items-center justify-center rounded-full bg-black/40 backdrop-blur-sm">
+                    <div className="h-10 w-10 animate-spin rounded-full border-4 border-blue-500 border-t-transparent" />
                   </div>
                 )}
               </div>
 
               <label
                 htmlFor="profile"
-                className={`absolute bottom-0 right-0 flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-linear-to-r from-[#FF4B2B] to-[#FF416C] text-white shadow-lg transition hover:scale-110 ${
+                className={`absolute bottom-0 right-0 flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-[#1c3059] text-white shadow-lg transition-all duration-300 hover:scale-110 hover:bg-[#16284b] ${
                   loading ? "pointer-events-none opacity-60" : ""
                 }`}
               >
@@ -107,45 +97,47 @@ const EditProfileModal = ({
             </div>
           </div>
 
-          <div className="grid gap-5 md:grid-cols-1">
+          <div className="space-y-6">
             <div>
-              <label className="mb-2 block text-sm font-semibold">
+              <label className="mb-2 block text-sm font-semibold text-slate-700">
                 Full Name
               </label>
 
-              <div className="flex h-14 items-center rounded-xl border bg-slate-50 px-4 focus-within:border-[#FF416C]">
+              <div className="flex h-14 items-center rounded-xl border border-slate-300 bg-white px-4 transition-all duration-200 focus-within:border-blue-600 focus-within:ring-4 focus-within:ring-blue-100">
                 <User size={18} className="text-slate-400" />
 
                 <input
                   name="name"
                   value={employeeInput.name}
                   onChange={handleChange}
-                  className="ml-3 w-full bg-transparent outline-none"
+                  className="ml-3 w-full bg-transparent text-slate-700 outline-none"
                 />
               </div>
             </div>
 
             <div>
-              <label className="mb-2 block text-sm font-semibold">Email</label>
+              <label className="mb-2 block text-sm font-semibold text-slate-700">
+                Email Address
+              </label>
 
-              <div className="flex h-14 items-center rounded-xl border bg-slate-50 px-4">
+              <div className="flex h-14 items-center rounded-xl border border-slate-300 bg-white px-4 transition-all duration-200 focus-within:border-blue-600 focus-within:ring-4 focus-within:ring-blue-100">
                 <Mail size={18} className="text-slate-400" />
 
                 <input
                   name="email"
                   value={employeeInput.email}
                   onChange={handleChange}
-                  className="ml-3 w-full bg-transparent outline-none"
+                  className="ml-3 w-full bg-transparent text-slate-700 outline-none"
                 />
               </div>
             </div>
           </div>
 
-          <div className="mt-8 flex justify-center gap-3">
+          <div className="mt-8 flex justify-end gap-4">
             <button
               type="button"
               onClick={onClose}
-              className="rounded-xl border px-6 py-3 font-semibold transition hover:bg-slate-100"
+              className="rounded-xl cursor-pointer border border-slate-300 px-6 py-3 font-semibold text-slate-700 transition hover:bg-slate-100"
             >
               Cancel
             </button>
@@ -153,7 +145,7 @@ const EditProfileModal = ({
             <button
               type="button"
               onClick={handleSave}
-              className="flex items-center gap-2 rounded-xl bg-linear-to-r from-[#FF4B2B] to-[#FF416C] px-6 py-3 font-semibold text-white"
+              className="flex cursor-pointer items-center gap-2 rounded-xl bg-[#1c3059] px-6 py-3 font-semibold text-white shadow-lg transition-all duration-300 hover:bg-[#16284b]"
             >
               <Save size={18} />
               Save Changes

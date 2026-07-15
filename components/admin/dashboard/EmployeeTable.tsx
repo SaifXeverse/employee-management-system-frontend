@@ -14,7 +14,7 @@ import {
   Trash2Icon,
 } from "lucide-react";
 import { useMemo, useState, useEffect } from "react";
-import useUpload from "@/hooks/useUpload";
+import useUpload from "@/hooks/useImageUpload";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { getEmployees, deleteEmployee } from "@/store/slices/employeeSlice";
 import { getSocket } from "@/libs/socket";
@@ -53,9 +53,7 @@ const EmployeeTable = () => {
     };
   }, [dispatch]);
 
-  const { handleDelete } = useUpload((url, publicId) => {
-    console.log("Cloudinary image is delete " + url + " " + publicId);
-  });
+  const { handleDelete } = useUpload(() => {});
 
   const filteredEmployees = useMemo(() => {
     return employees

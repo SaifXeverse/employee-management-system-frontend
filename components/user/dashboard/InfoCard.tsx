@@ -8,14 +8,12 @@ const InfoCard = ({
   value: string;
 }) => {
   return (
-    <div className="rounded-2xl flex flex-col items-center border border-slate-200 bg-slate-50 p-6 transition hover:shadow-lg">
-      <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-linear-to-r from-[#FF4B2B] to-[#FF416C] text-white">
+    <div className="group flex flex-col items-center rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-blue-500 hover:shadow-xl">
+      <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-[#1c3059] text-white transition-all duration-300 group-hover:bg-[#16284b]">
         {icon}
       </div>
-
-      <p className="text-sm text-slate-500">{title}</p>
-
-      <h3 className="mt-2 text-lg font-semibold text-slate-800">{value}</h3>
+      <p className="text-sm font-medium text-slate-500">{title}</p>
+      <h3 className="mt-2 text-xl font-bold text-slate-800">{value}</h3>
     </div>
   );
 };
