@@ -1,27 +1,26 @@
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
+import axios from "axios";
 
 const useUpload = (onSuccess: (url: string, publicId: string) => void) => {
   const [imageUrl, setImageUrl] = useState("");
   const [publicId, setPublicId] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleUpload = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
     setLoading(true);
+
     const formData = new FormData();
     formData.append("file", file);
 
     try {
-      const res = await fetch("/api/uploadImage", {
-        method: "POST",
-        body: formData,
-      });
-      const data = await res.json();
+      const { data } = await axios.post("/api/upload", formData);
 
       setImageUrl(data.url);
       setPublicId(data.publicId);
+
       onSuccess(data.url, data.publicId);
     } catch (error) {
       console.error("Upload error:", error);
@@ -32,28 +31,35 @@ const useUpload = (onSuccess: (url: string, publicId: string) => void) => {
 
   const handleDelete = async (overridePublicId?: string) => {
     const idToDelete = overridePublicId || publicId;
-    if (!publicId) return;
+
+    if (!idToDelete) return;
 
     setLoading(true);
+
     try {
-      const res = await fetch("/api/uploadImage", {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ publicId: idToDelete }),
+      await axios.delete("/api/upload", {
+        data: {
+          publicId: idToDelete,
+          resourceType: "image",
+        },
       });
 
-      if (res.ok) {
-        setImageUrl("");
-        setPublicId("");
-      }
+      setImageUrl("");
+      setPublicId("");
     } catch (error) {
-      console.error("Delete error:", error);
+      // console.error("Delete error:", error);
     } finally {
       setLoading(false);
     }
   };
 
-  return { imageUrl, publicId, loading, handleUpload, handleDelete };
+  return {
+    imageUrl,
+    publicId,
+    loading,
+    handleUpload,
+    handleDelete,
+  };
 };
 
 export default useUpload;

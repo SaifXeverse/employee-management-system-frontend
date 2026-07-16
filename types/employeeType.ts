@@ -8,4 +8,5 @@ export interface Employee {
   department: string;
   status: string;
   salary: number | string;
+  resume: string;
 }

@@ -11,10 +11,13 @@ import {
   Pencil,
   User,
   BadgeCheck,
+  File,
+  ShieldCheck,
 } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { getEmployee } from "@/store/slices/employeeSlice";
 import Image from "next/image";
+import { getSocket } from "@/libs/socket";
 
 const EmployeeDetails = () => {
   const params = useParams();
@@ -25,6 +28,19 @@ const EmployeeDetails = () => {
     if (params.id) {
       dispatch(getEmployee(Number(params.id)));
     }
+    const socket = getSocket();
+
+    socket.on("employeeResumeUploaded", () => {
+      dispatch(getEmployee(Number(params.id)));
+    });
+    socket.on("employeeProfileUpdated", () => {
+      dispatch(getEmployee(Number(params.id)));
+    });
+
+    return () => {
+      socket.off("employeeResumeUploaded");
+      socket.off("employeeProfileUpdated");
+    };
   }, [params.id, dispatch]);
 
   return (
@@ -34,12 +50,10 @@ const EmployeeDetails = () => {
           <h1 className="text-3xl font-bold text-slate-900">
             Employee Details
           </h1>
-
           <p className="mt-1 text-sm text-slate-500">
             Complete employee profile and information.
           </p>
         </div>
-
         <Link
           href="/admin/employees"
           replace
@@ -50,89 +64,142 @@ const EmployeeDetails = () => {
           Back
         </Link>
       </div>
+
       <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-lg">
-        <div className="bg-linear-to-r from-violet-600 via-indigo-600 to-blue-600 px-6 py-8">
+        <div className="bg-[#1b388a] px-6 py-8">
           <div className="flex flex-col items-center text-center">
             <div className="relative h-28 w-28 shrink-0 overflow-hidden rounded-full border-4 border-violet-200 bg-slate-100 shadow-md">
               {employee?.img ? (
                 <Image
-                  src={employee?.img}
-                  alt={employee?.name}
-                  loading="eager"
+                  src={employee.img}
+                  alt={employee.name}
                   width={200}
                   height={200}
-                  className="w-full h-full object-cover"
+                  loading="eager"
+                  className="h-full w-full object-cover"
                 />
               ) : (
-                <div className="flex h-full w-full items-center justify-center bg-linear-to-r from-violet-600 to-blue-600">
+                <div className="flex h-full w-full items-center justify-center bg-[#1b388a]">
                   <User size={28} className="text-white" />
                 </div>
               )}
             </div>
-
             <h2 className="mt-4 text-2xl font-bold text-white">
-              {employee?.name.toUpperCase()}
+              {employee?.name?.toUpperCase()}
             </h2>
-
             <p className="mt-1 break-all text-sm text-white/80">
               {employee?.email}
             </p>
           </div>
         </div>
+
         <div className="grid grid-cols-1 gap-4 p-6 md:grid-cols-2">
-          <div className="rounded-2xl border flex flex-col items-center border-slate-200 bg-white p-5 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-md">
+          <div className="flex flex-col items-center rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-md">
+            <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-blue-100">
+              <User size={20} className="text-blue-600" />
+            </div>
+            <p className="text-sm text-slate-500">Name</p>
+            <h3 className="mt-2 break-all text-base font-semibold text-slate-900">
+              {employee?.name}
+            </h3>
+          </div>
+
+          <div className="flex flex-col items-center rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-md">
             <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-blue-100">
               <Mail size={20} className="text-blue-600" />
             </div>
-
             <p className="text-sm text-slate-500">Email Address</p>
-
             <h3 className="mt-2 break-all text-base font-semibold text-slate-900">
               {employee?.email}
             </h3>
           </div>
 
-          <div className="rounded-2xl border flex flex-col items-center border-slate-200 bg-white p-5 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-md">
+          <div className="flex flex-col items-center rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-md">
             <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-violet-100">
               <Building2 size={20} className="text-violet-600" />
             </div>
-
             <p className="text-sm text-slate-500">Department</p>
-
             <span className="mt-3 inline-flex rounded-full bg-violet-100 px-4 py-2 text-sm font-semibold text-violet-700">
               {employee?.department}
             </span>
           </div>
 
-          <div className="rounded-2xl border flex flex-col items-center border-slate-200 bg-white p-5 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-md">
+          <div className="flex flex-col items-center rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-md">
             <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-green-100">
               <DollarSign size={20} className="text-green-600" />
             </div>
-
             <p className="text-sm text-slate-500">Salary</p>
-
             <h3 className="mt-2 text-2xl font-bold text-green-600">
               ${employee?.salary}
             </h3>
           </div>
 
-          <div className="rounded-2xl border flex flex-col items-center border-slate-200 bg-white p-5 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-md">
+          <div className="flex flex-col items-center rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-md">
+            <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-green-100">
+              <ShieldCheck size={20} className="text-green-600" />
+            </div>
+            <p className="text-sm text-slate-500">Status</p>
+            <h3 className="mt-2 text-2xl font-bold text-green-600">
+              {employee?.status}
+            </h3>
+          </div>
+
+          <div className="flex flex-col items-center rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-md">
             <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-orange-100">
               <User size={20} className="text-orange-600" />
             </div>
-
             <p className="text-sm text-slate-500">Employee ID</p>
-
             <h3 className="mt-2 text-xl font-bold text-slate-900">
               #{params.id}
             </h3>
           </div>
+          <div className="hidden md:block"></div>
+          {employee?.resume ? (
+            <Link 
+              href={employee.resume}
+              target="_blank"
+              rel="noopener noreferrer"
+              prefetch={false}
+              className="md:col-span-2 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-md"
+            >
+              <div className="flex flex-col items-center text-center">
+                <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-100">
+                  <File size={24} className="text-blue-600" />
+                </div>
+                <p className="text-sm text-slate-500">Resume</p>
+                <h3 className="mt-2 text-xl font-semibold text-slate-900">
+                  Resume Available
+                </h3>
+                <p className="mt-3 max-w-lg text-sm text-slate-500">
+                  Click the button below to view or download the employee
+                  resume.
+                </p>
+                <span className="mt-5 inline-flex rounded-xl bg-blue-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-blue-700">
+                  View Resume
+                </span>
+              </div>
+            </Link>
+          ) : (
+            <div className="md:col-span-2 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-md">
+              <div className="flex flex-col items-center text-center">
+                <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-orange-100">
+                  <File size={24} className="text-orange-600" />
+                </div>
+                <p className="text-sm text-slate-500">Resume</p>
+                <h3 className="mt-2 text-xl font-semibold text-slate-900">
+                  Resume Not Uploaded
+                </h3>
+                <p className="mt-3 max-w-lg text-sm text-slate-500">
+                  This employee has not uploaded a resume yet.
+                </p>
+              </div>
+            </div>
+          )}
         </div>
 
         <div className="flex flex-col gap-4 border-t border-slate-200 bg-slate-50 px-6 py-5 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-2 text-green-600">
             <BadgeCheck size={20} />
-
             <span className="text-sm font-medium">
               Employee record is active
             </span>
@@ -142,7 +209,7 @@ const EmployeeDetails = () => {
             href={`/admin/employees/${params.id}/edit`}
             replace
             prefetch={false}
-            className="inline-flex items-center justify-center gap-2 rounded-xl bg-linear-to-r from-violet-600 to-blue-600 px-6 py-2.5 text-sm font-semibold text-white transition duration-300 hover:shadow-lg"
+            className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#1b388a] px-6 py-2.5 text-sm font-semibold text-white transition duration-300 hover:shadow-lg"
           >
             <Pencil size={18} />
             Edit Employee

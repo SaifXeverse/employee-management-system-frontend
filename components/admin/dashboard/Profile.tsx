@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowLeft, Mail, Pencil, User, Camera, Save, X } from "lucide-react";
-import useUpload from "@/hooks/useImageUpload";
+import useUpload from "@/hooks/useUpload";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { getProfile, updateProfile } from "@/store/slices/profileSlice";
 import { useEffect, useState } from "react";
@@ -20,6 +20,8 @@ const Profile = () => {
     email: "",
   });
 
+  console.log(user);
+  
   useEffect(() => {
     dispatch(getProfile());
 
@@ -95,7 +97,7 @@ const Profile = () => {
       </div>
 
       <div className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-xl">
-        <div className="relative h-36 bg-linear-to-r from-violet-600 via-indigo-600 to-blue-600">
+        <div className="relative h-36 bg-[#1b388a]">
           <div className="absolute inset-0 bg-black/10" />
         </div>
 
@@ -112,7 +114,7 @@ const Profile = () => {
                   className="w-full h-full object-cover"
                 />
               ) : (
-                <div className="flex h-full w-full items-center justify-center bg-linear-to-r from-violet-600 to-blue-600">
+                <div className="flex h-full w-full items-center justify-center bg-[#1b388a]">
                   <User size={60} className="text-white" />
                 </div>
               )}
@@ -181,7 +183,7 @@ const Profile = () => {
           {!isEditing ? (
             <button
               onClick={() => setIsEditing(true)}
-              className="mt-6 cursor-pointer inline-flex items-center gap-2 rounded-xl bg-linear-to-r from-violet-600 to-blue-600 px-6 py-3 font-semibold text-white shadow-lg transition hover:scale-105"
+              className="mt-6 cursor-pointer inline-flex items-center gap-2 rounded-xl bg-[#1b388a] px-6 py-3 font-semibold text-white shadow-lg transition hover:scale-105"
             >
               <Pencil size={18} />
               Edit Profile

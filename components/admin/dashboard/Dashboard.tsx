@@ -68,7 +68,7 @@ const Dashboard = () => {
 
   return (
     <div className="space-y-8 lg:space-y-10">
-      <div>
+      <div className="mb-4">
         <h1 className="text-3xl font-bold text-slate-900 sm:text-4xl">
           Dashboard
         </h1>
@@ -76,7 +76,7 @@ const Dashboard = () => {
           Welcome back 👋 Here's an overview of your employee management system.
         </p>
       </div>
-      <div className="grid grid-cols-1 py-8 gap-5 sm:grid-cols-2 xl:grid-cols-3">
+      <div className="grid grid-cols-1 py-8 mb-4 gap-5 sm:grid-cols-2 xl:grid-cols-3">
         {cards.map((card, index) => {
           const Icon = card.icon;
 
@@ -144,7 +144,7 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
-        <div className="rounded-3xl bg-linear-to-r from-violet-600 via-indigo-600 to-blue-600 p-5 text-white shadow-xl sm:p-8">
+        <div className="rounded-3xl bg-[#1b388a] p-5 text-white shadow-xl sm:p-8">
           <h2 className="text-xl font-bold sm:text-2xl">
             Employee Management System
           </h2>

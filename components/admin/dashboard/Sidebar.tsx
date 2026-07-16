@@ -93,7 +93,7 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
         <div className="border-b border-slate-800 px-6 py-6">
           <div className="flex items-center justify-between lg:justify-start">
             <div className="flex items-center gap-4">
-              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-linear-to-br from-violet-600 to-blue-600 shadow-lg">
+              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#1b388a] shadow-lg">
                 <BriefcaseBusiness className="text-white" size={28} />
               </div>
 
@@ -128,7 +128,7 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
                 onClick={() => setIsOpen(false)}
                 className={`group mb-2 flex items-center justify-between rounded-2xl px-5 py-4 transition-all duration-300 ${
                   active
-                    ? "bg-linear-to-r from-violet-600 to-blue-600 text-white shadow-lg"
+                    ? "bg-[#1b388a] text-white shadow-lg"
                     : "text-slate-300 hover:bg-slate-800 hover:text-white"
                 }`}
               >

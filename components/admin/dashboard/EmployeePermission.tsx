@@ -50,7 +50,7 @@ const EmployeePermission = () => {
     <div className="mx-auto w-full max-w-7xl overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
       <div className="flex flex-col gap-5 border-b border-slate-200 p-5 lg:flex-row lg:items-center lg:justify-between">
         <div className="flex items-center gap-4">
-          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-linear-to-r from-violet-600 to-blue-600">
+          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#1b388a]">
             <ShieldCheck className="text-white" size={22} />
           </div>
 
@@ -122,7 +122,7 @@ const EmployeePermission = () => {
                             className="h-full w-full object-cover"
                           />
                         ) : (
-                          <div className="flex h-full w-full items-center justify-center bg-linear-to-r from-violet-600 to-blue-600">
+                          <div className="flex h-full w-full items-center justify-center bg-[#1b388a]">
                             <User className="text-white" size={24} />
                           </div>
                         )}
@@ -179,7 +179,7 @@ const EmployeePermission = () => {
                     className="h-full w-full object-cover"
                   />
                 ) : (
-                  <div className="flex h-full w-full items-center justify-center bg-linear-to-r from-violet-600 to-blue-600">
+                  <div className="flex h-full w-full items-center justify-center bg-[#1b388a]">
                     <User className="text-white" size={22} />
                   </div>
                 )}

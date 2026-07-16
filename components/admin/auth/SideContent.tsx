@@ -7,7 +7,7 @@ type Side = {
 
 const SideContent = ({heading, heading2, para}: Side) => {
   return (
-    <section className="hidden md:flex relative overflow-hidden items-center justify-center bg-linear-to-br from-blue-700 via-indigo-700 to-purple-700 p-16">
+    <section className="hidden md:flex relative overflow-hidden items-center justify-center bg-[#1b388a] p-16">
 
         <div className="absolute w-72 h-72 bg-white/10 rounded-full -top-16 -left-16 blur-2xl" />
 

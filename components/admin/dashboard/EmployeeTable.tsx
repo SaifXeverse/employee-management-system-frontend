@@ -14,7 +14,7 @@ import {
   Trash2Icon,
 } from "lucide-react";
 import { useMemo, useState, useEffect } from "react";
-import useUpload from "@/hooks/useImageUpload";
+import useUpload from "@/hooks/useUpload";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { getEmployees, deleteEmployee } from "@/store/slices/employeeSlice";
 import { getSocket } from "@/libs/socket";
@@ -79,7 +79,7 @@ const EmployeeTable = () => {
     <div className="mx-auto w-full max-w-7xl overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
       <div className="flex flex-col gap-5 border-b border-slate-200 p-5 lg:flex-row lg:items-center lg:justify-between">
         <div className="flex items-center gap-4">
-          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-linear-to-r from-violet-600 to-blue-600">
+          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#1b388a]">
             <Users className="text-white" size={22} />
           </div>
 
@@ -93,7 +93,7 @@ const EmployeeTable = () => {
         </div>
 
         <div className="flex flex-col gap-3 lg:flex-row lg:items-center">
-          <div className="relative w-full lg:w-80">
+          <div className="relative md:w-full">
             <Search
               size={18}
               className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
@@ -120,7 +120,7 @@ const EmployeeTable = () => {
             href="/admin/employees/add"
             replace
             prefetch={false}
-            className="flex h-11 items-center justify-center gap-2 rounded-xl bg-linear-to-r from-violet-600 to-blue-600 px-5 text-sm font-semibold text-white transition hover:shadow-lg"
+            className="flex h-11 lg:w-3/5 items-center justify-center gap-2 rounded-xl bg-[#1b388a] px-4 text-sm font-semibold text-white transition hover:shadow-lg"
           >
             <UserPlus size={18} />
             Add Employee
@@ -183,7 +183,7 @@ const EmployeeTable = () => {
                             className="h-full w-full object-cover"
                           />
                         ) : (
-                          <div className="flex h-full w-full items-center justify-center bg-linear-to-r from-violet-600 to-blue-600">
+                          <div className="flex h-full w-full items-center justify-center bg-[#1b388a]">
                             <User size={28} className="text-white" />
                           </div>
                         )}
@@ -341,7 +341,7 @@ const EmployeeTable = () => {
                   </span>
                 </div>
               </div>
-              <div className="mt-5 flex justify-end gap-2 border-t border-slate-100 pt-4">
+              <div className="mt-5 flex justify-center gap-4 border-t border-slate-100 pt-4">
                 <Link
                   href={`/admin/employees/${employee.id}`}
                   replace

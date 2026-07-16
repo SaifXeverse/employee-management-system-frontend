@@ -1,6 +1,6 @@
 "use client";
 
-import { User, LogOut, ChevronRight, FileUserIcon } from "lucide-react";
+import { User, LogOut, ChevronRight, FileUserIcon, Eye, File } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { logoutEmployee } from "@/store/slices/employeeAuthSlice";
@@ -8,7 +8,7 @@ import { getEmployeeProfile } from "@/store/slices/employeeDashboardSlice";
 import { useEffect } from "react";
 import { getSocket } from "@/libs/socket";
 import { AddResumeModal } from "./modal/AddResumeModal";
-import { ResumeViewModal } from "./modal/ResumeViewModal";
+import Link from "next/link";
 
 const Dashboard = () => {
   const dispatch = useAppDispatch();
@@ -53,15 +53,15 @@ const Dashboard = () => {
         </div>
       </div>
 
-      <div className="mx-auto max-w-7xl px-6 py-10">
+      <div className="mx-auto max-w-7xl px-3 py-6">
         <div className="rounded-3xl border border-slate-200 bg-white p-8 shadow-lg">
           <h2 className="text-3xl font-bold text-slate-800">
             Hello, {employee?.name} 👋
           </h2>
 
           <p className="mt-3 leading-7 text-slate-500">
-            Welcome to your employee portal. Manage your profile, attendance,
-            leave requests and account settings from one place.
+            Welcome to your employee portal. Manage your profile and upload
+            resume.
           </p>
         </div>
         <div className="mt-8 grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
@@ -69,7 +69,7 @@ const Dashboard = () => {
             onClick={() => router.replace("/profile")}
             className="cursor-pointer rounded-2xl border border-slate-200 bg-white p-6 text-left shadow-md transition-all duration-300 hover:-translate-y-2 hover:border-blue-500 hover:shadow-xl"
           >
-            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-[#1c3059d7] transition hover:bg-[#1c3059]">
+            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-[#1b388a] transition">
               <User size={30} className="text-white" />
             </div>
             <h3 className="mt-6 text-xl font-semibold text-slate-800">
@@ -78,16 +78,34 @@ const Dashboard = () => {
             <p className="mt-2 text-sm leading-6 text-slate-500">
               View & update your profile
             </p>
-            <div className="mt-6 flex items-center gap-2 font-semibold text-[#1c3059]">
+            <div className="mt-6 flex items-center gap-2 font-semibold text-[#1b388a]">
               Open
-              <ChevronRight
-                size={18}
-                className="transition-transform duration-300 group-hover:translate-x-1"
-              />
+              <ChevronRight size={18} />
             </div>
           </button>
           <AddResumeModal />
-          <ResumeViewModal />
+          {employee?.resume && (
+            <Link
+              prefetch={false}
+              target="_blank"
+              href={employee?.resume!}
+              className="cursor-pointer rounded-2xl border border-slate-200 bg-white p-6 text-left shadow-md transition-all duration-300 hover:-translate-y-2 hover:border-blue-500 hover:shadow-xl"
+            >
+              <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-[#1b388a] transition">
+                <File size={30} className="text-white" />
+              </div>
+              <h3 className="mt-6 text-xl font-semibold text-slate-800">
+                View Resume
+              </h3>
+              <p className="mt-2 text-sm leading-6 text-slate-500">
+                View your PDF or download your DOC/DOCX file anytime.
+              </p>
+              <div className="mt-6 flex items-center gap-2 font-semibold text-[#1b388a]">
+                View
+                <ChevronRight size={18} />
+              </div>
+            </Link>
+          )}
         </div>
       </div>
     </div>

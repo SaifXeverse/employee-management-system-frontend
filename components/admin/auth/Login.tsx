@@ -90,7 +90,7 @@ const Login = () => {
 
             <button
               disabled={loading}
-              className="h-14 mt-3 w-full cursor-pointer rounded-xl bg-linear-to-r from-violet-600 to-blue-600 hover:to-blue-500 hover:from-violet-500 font-semibold text-white transition hover:shadow-lg disabled:opacity-50"
+              className="h-14 mt-3 w-full cursor-pointer rounded-xl bg-[#1b388a] hover:to-blue-500 hover:from-violet-500 font-semibold text-white transition hover:shadow-lg disabled:opacity-50"
             >
               {loading ? "Logging in..." : "Login"}
             </button>

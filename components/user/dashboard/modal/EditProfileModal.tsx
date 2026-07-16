@@ -57,7 +57,7 @@ const EditProfileModal = ({
         <div className="max-h-[75vh] overflow-y-auto p-8">
           <div className="mb-8 flex justify-center">
             <div className="relative">
-              <div className="relative h-28 w-28 overflow-hidden rounded-full border-4 border-white bg-slate-200 shadow-xl">
+              <div className="relative h-28 w-28 overflow-hidden rounded-full border-4 border-[#1b388a] bg-slate-200 shadow-xl">
                 {employeeInput.img || imageUrl ? (
                   <img
                     src={employeeInput.img || imageUrl}
@@ -133,7 +133,7 @@ const EditProfileModal = ({
             </div>
           </div>
 
-          <div className="mt-8 flex justify-end gap-4">
+          <div className="mt-8 flex justify-center gap-4">
             <button
               type="button"
               onClick={onClose}

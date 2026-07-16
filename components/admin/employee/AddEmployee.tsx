@@ -4,7 +4,7 @@ import { FormEvent, useState } from "react";
 import { useAppDispatch } from "@/store/hooks";
 import { createEmployee } from "@/store/slices/employeeSlice";
 import { Employee } from "@/types/employeeType";
-import useUpload from "@/hooks/useImageUpload";
+import useUpload from "@/hooks/useUpload";
 import EmployeeForm from "../dashboard/EmployeeForm";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
@@ -18,6 +18,7 @@ const initialState: Employee = {
   department: "",
   status: "",
   salary: "",
+  resume: "",
 };
 
 const AddEmployee = () => {

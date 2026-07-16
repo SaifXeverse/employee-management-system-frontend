@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { getEmployee, updateEmployee } from "@/store/slices/employeeSlice";
 import { Employee } from "@/types/employeeType";
 import { useParams, useRouter } from "next/navigation";
-import useUpload from "@/hooks/useImageUpload";
+import useUpload from "@/hooks/useUpload";
 import EmployeeForm from "../dashboard/EmployeeForm";
 import toast from "react-hot-toast";
 
@@ -18,6 +18,7 @@ const initialState: Employee = {
   department: "",
   status: "",
   salary: "",
+  resume: "",
 };
 
 const EditEmployee = () => {
@@ -44,6 +45,7 @@ const EditEmployee = () => {
         department: employee.department || "",
         status: employee.status || "",
         salary: employee.salary || "",
+        resume: employee.resume || "",
       });
     }
   }, [employee]);
@@ -54,14 +56,16 @@ const EditEmployee = () => {
     setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const { handleUpload, imageUrl, loading, handleDelete } = useUpload((url, publicId) => {
-    setInputs((prev) => ({ ...prev, img: url, imgId: publicId }));
-  });
+  const { handleUpload, imageUrl, loading, handleDelete } = useUpload(
+    (url, publicId) => {
+      setInputs((prev) => ({ ...prev, img: url, imgId: publicId }));
+    },
+  );
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (inputs.img !== employee?.img) {
-      handleDelete(employee?.imgId)
+      handleDelete(employee?.imgId);
     }
     await dispatch(
       updateEmployee({
@@ -69,7 +73,7 @@ const EditEmployee = () => {
         data: inputs,
       }),
     );
-    toast.success("Employee Updated")
+    toast.success("Employee Updated");
     router.replace("/admin/employees");
   };
 

@@ -9,7 +9,7 @@ import {
   ShieldCheck,
   ArrowLeftIcon,
 } from "lucide-react";
-import useUpload from "@/hooks/useImageUpload";
+import useUpload from "@/hooks/useUpload";
 import InfoCard from "./InfoCard";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -143,7 +143,7 @@ const Profile = () => {
         <div className="mx-auto -mt-16 max-w-6xl px-6 pb-10">
           <div className="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl">
             <div className="flex flex-col items-center border-b border-slate-200 pb-8">
-              <div className="h-36 w-36 overflow-hidden rounded-full border-4 border-[#1c3059] bg-slate-200 shadow-lg">
+              <div className="h-36 w-36 overflow-hidden rounded-full border-4 border-[#1b388a] bg-slate-200 shadow-lg">
                 {employee?.img ? (
                   <Image
                     src={employee.img}
