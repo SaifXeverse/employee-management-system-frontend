@@ -1,27 +1,37 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import api from "@/libs/axios";
 
-export default function MainLayoutEmployee({
+export default function EmployeeMainLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   const router = useRouter();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const checkAuth = async () => {
+    const checkEmployee = async () => {
       try {
         await api.get("/employee/verify");
+        try {
+          await api.get("/auth/verify");
+          router.push("/admin/dashboard");
+          return;
+        } catch {}
+
+        setLoading(false);
       } catch {
         router.push("/login");
       }
     };
 
-    checkAuth();
+    checkEmployee();
   }, [router]);
+
+  if (loading) return null;
 
   return <main>{children}</main>;
 }

@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import api from "@/libs/axios";
 
-export default function AuthLayout({
+export default function EmployeeAuthLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -12,14 +12,20 @@ export default function AuthLayout({
   const router = useRouter();
 
   useEffect(() => {
-    const checkUser = async () => {
+    const checkLogin = async () => {
       try {
         await api.get("/employee/verify");
         router.push("/dashboard");
+        return;
+      } catch {}
+
+      try {
+        await api.get("/auth/verify");
+        router.push("/admin/dashboard");
       } catch {}
     };
 
-    checkUser();
+    checkLogin();
   }, [router]);
 
   return <>{children}</>;
