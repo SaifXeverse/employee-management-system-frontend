@@ -37,3 +37,8 @@ export const updateEmployeeStatusApi = async (id: number) => {
   });
   return response.data;
 };
+
+export const resumeDeleteAdminApi = async (id: number) => {
+  await api.delete(`/employee/resume/admin/delete/${id}`);
+  return;
+};

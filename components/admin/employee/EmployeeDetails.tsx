@@ -13,15 +13,21 @@ import {
   BadgeCheck,
   File,
   ShieldCheck,
+  Eye,
+  Trash2,
+  Download,
 } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { getEmployee } from "@/store/slices/employeeSlice";
+import {
+  getEmployee,
+  deleteEmployeeResumeByAdmin,
+} from "@/store/slices/employeeSlice";
 import Image from "next/image";
 import { getSocket } from "@/libs/socket";
 
 const EmployeeDetails = () => {
-  const params = useParams();
   const dispatch = useAppDispatch();
+  const params = useParams();
   const { employee } = useAppSelector((state) => state.employee);
 
   useEffect(() => {
@@ -36,12 +42,30 @@ const EmployeeDetails = () => {
     socket.on("employeeProfileUpdated", () => {
       dispatch(getEmployee(Number(params.id)));
     });
+    socket.on("employeeResumeDeleted", () => {
+      dispatch(getEmployee(Number(params.id)));
+    });
+    socket.on("employeeResumeDeletedByAdmin", () => {
+      dispatch(getEmployee(Number(params.id)));
+    });
+    socket.on("employeeUpdated", () => {
+      dispatch(getEmployee(Number(params.id)));
+    });
 
     return () => {
       socket.off("employeeResumeUploaded");
       socket.off("employeeProfileUpdated");
+      socket.off("employeeResumeDeleted");
+      socket.off("employeeResumeDeletedByAdmin");
+      socket.off("employeeUpdated");
     };
   }, [params.id, dispatch]);
+
+  const getAttachmentUrl = (url: string) => {
+    if (!url) return "";
+    const uploadParts = url.split("/upload/");
+    return `${uploadParts[0]}/upload/fl_attachment/${uploadParts[1]}`;
+  };
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-6">
@@ -155,13 +179,7 @@ const EmployeeDetails = () => {
           </div>
           <div className="hidden md:block"></div>
           {employee?.resume ? (
-            <Link 
-              href={employee.resume}
-              target="_blank"
-              rel="noopener noreferrer"
-              prefetch={false}
-              className="md:col-span-2 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-md"
-            >
+            <div className="md:col-span-2 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm ">
               <div className="flex flex-col items-center text-center">
                 <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-100">
                   <File size={24} className="text-blue-600" />
@@ -174,13 +192,38 @@ const EmployeeDetails = () => {
                   Click the button below to view or download the employee
                   resume.
                 </p>
-                <span className="mt-5 inline-flex rounded-xl bg-blue-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-blue-700">
-                  View Resume
-                </span>
+                <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3">
+                  <Link
+                    href={employee.resume}
+                    target="_blank"
+                    prefetch={false}
+                    className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-5 py-3 text-sm font-medium text-white transition-all duration-300 hover:bg-blue-700 hover:-translate-y-0.5 hover:shadow-lg"
+                      >
+                        <Eye size={18} />
+                        View
+                  </Link>
+                   <Link
+                        href={getAttachmentUrl(employee?.resume || "")}
+                        prefetch={false}
+                        className="inline-flex items-center gap-2 rounded-xl border border-blue-600 bg-white px-5 py-3 text-sm font-medium text-blue-600 transition-all duration-300 hover:bg-blue-50 hover:-translate-y-0.5 hover:shadow-lg"
+                      >
+                        <Download size={18} />
+                        Download
+                      </Link>
+                  <button
+                    onClick={() =>
+                      dispatch(deleteEmployeeResumeByAdmin(employee.id!))
+                    }
+                    className="inline-flex items-center gap-2 rounded-xl bg-red-500 px-5 py-3 text-sm font-medium text-white transition-all duration-300 hover:bg-red-600 hover:-translate-y-0.5 hover:shadow-lg"
+                      >
+                        <Trash2 size={18} />
+                        Delete
+                  </button>
+                </div>
               </div>
-            </Link>
+            </div>
           ) : (
-            <div className="md:col-span-2 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-md">
+            <div className="md:col-span-2 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
               <div className="flex flex-col items-center text-center">
                 <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-orange-100">
                   <File size={24} className="text-orange-600" />

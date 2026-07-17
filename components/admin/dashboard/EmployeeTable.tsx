@@ -12,6 +12,7 @@ import {
   Users,
   User,
   Trash2Icon,
+  MoreVertical,
 } from "lucide-react";
 import { useMemo, useState, useEffect } from "react";
 import useUpload from "@/hooks/useUpload";
@@ -147,6 +148,9 @@ const EmployeeTable = () => {
                 Salary
               </th>
               <th className="px-5 py-4 text-center text-sm font-semibold text-slate-600">
+                Resume
+              </th>
+              <th className="px-5 py-4 text-center text-sm font-semibold text-slate-600">
                 Actions
               </th>
             </tr>
@@ -224,6 +228,18 @@ const EmployeeTable = () => {
                   <td className="px-5 text-center">
                     <span className="rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700">
                       ${employee.salary || "0.00"}
+                    </span>
+                  </td>
+
+                  <td className="px-5 text-center">
+                    <span
+                      className={`rounded-full px-3 py-1 text-xs font-semibold ${
+                        employee.resume
+                          ? "bg-green-100 text-green-700"
+                          : "bg-red-100 text-red-700"
+                      }`}
+                    >
+                      {employee.resume ? "Available" : "Not Available"}
                     </span>
                   </td>
 
@@ -310,6 +326,7 @@ const EmployeeTable = () => {
                   </p>
                 </div>
               </div>
+
               <div className="mt-5 space-y-3">
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-slate-500">Department</span>
@@ -340,31 +357,49 @@ const EmployeeTable = () => {
                     ${employee.salary || "0.00"}
                   </span>
                 </div>
+
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-slate-500">Resume</span>
+
+                  <span
+                    className={`rounded-full px-3 py-1 text-xs font-semibold ${
+                      employee.resume
+                        ? "bg-green-100 text-green-700"
+                        : "bg-red-100 text-red-700"
+                    }`}
+                  >
+                    {employee.resume ? "Available" : "Not Available"}
+                  </span>
+                </div>
               </div>
+
               <div className="mt-5 flex justify-center gap-4 border-t border-slate-100 pt-4">
                 <Link
                   href={`/admin/employees/${employee.id}`}
                   replace
                   prefetch={false}
-                  className="rounded-lg bg-blue-100 p-2 text-blue-600 transition hover:bg-blue-200"
+                  className="rounded-lg bg-blue-100 flex gap-2 items-center py-2 px-4 text-blue-600 transition hover:bg-blue-200"
                 >
                   <Eye size={17} />
+                  View
                 </Link>
 
                 <Link
                   href={`/admin/employees/${employee.id}/edit`}
                   replace
                   prefetch={false}
-                  className="rounded-lg bg-emerald-100 p-2 text-emerald-600 transition hover:bg-emerald-200"
+                  className="rounded-lg bg-emerald-100 flex gap-2 items-center py-2 px-4 text-emerald-600 transition hover:bg-emerald-200"
                 >
                   <Pencil size={17} />
+                  Edit
                 </Link>
 
                 <button
                   onClick={() => handleDeleted(employee?.imgId!, employee?.id!)}
-                  className="rounded-lg bg-red-100 p-2 text-red-600 transition hover:bg-red-200"
+                  className="rounded-lg bg-red-100 flex gap-2 items-center py-2 px-4 text-red-600 transition hover:bg-red-200"
                 >
                   <Trash2 size={17} />
+                  Delete
                 </button>
               </div>
             </div>

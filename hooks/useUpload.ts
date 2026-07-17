@@ -37,17 +37,11 @@ const useUpload = (onSuccess: (url: string, publicId: string) => void) => {
     setLoading(true);
 
     try {
-      await axios.delete("/api/upload", {
-        data: {
-          publicId: idToDelete,
-          resourceType: "image",
-        },
-      });
-
+      await axios.delete("/api/upload", { data: { publicId: idToDelete } });
       setImageUrl("");
       setPublicId("");
     } catch (error) {
-      // console.error("Delete error:", error);
+      console.error("Delete error:", error);
     } finally {
       setLoading(false);
     }

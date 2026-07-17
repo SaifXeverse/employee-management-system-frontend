@@ -7,6 +7,7 @@ import {
   deleteEmployeeApi,
   updateEmployeeStatusApi,
   getEmployeeApi,
+  resumeDeleteAdminApi,
 } from "@/services/employeeApi";
 import { Employee } from "@/types/employeeType";
 
@@ -72,6 +73,13 @@ export const updateEmployeeStatus = createAsyncThunk(
   },
 );
 
+export const deleteEmployeeResumeByAdmin = createAsyncThunk(
+  "employee/resume/admin/delete",
+  async (id: number) => {
+    return await resumeDeleteAdminApi(id);
+  },
+);
+
 const employeeSlice = createSlice({
   name: "employee",
   initialState,
@@ -94,6 +102,10 @@ const employeeSlice = createSlice({
 
       .addCase(createEmployee.fulfilled, (state, action) => {
         state.employees.push(action.payload);
+      })
+
+      .addCase(deleteEmployeeResumeByAdmin.fulfilled, (state, action) => {
+        state.loading = false;
       })
 
       .addCase(deleteEmployee.fulfilled, (state, action) => {

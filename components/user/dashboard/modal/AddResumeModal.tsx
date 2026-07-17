@@ -3,7 +3,6 @@ import {
   DialogClose,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -21,9 +20,9 @@ import {
 } from "@/store/slices/employeeDashboardSlice";
 import { getSocket } from "@/libs/socket";
 import { useEffect, useState } from "react";
-import useFileUpload from "@/hooks/useUpload";
 import toast from "react-hot-toast";
 import Link from "next/link";
+import useUpload from "@/hooks/useUpload";
 
 export function AddResumeModal() {
   const dispatch = useAppDispatch();
@@ -47,7 +46,7 @@ export function AddResumeModal() {
     };
   }, [dispatch]);
 
-  const { handleUpload, handleDelete, loading } = useFileUpload(
+  const { handleUpload, handleDelete, loading } = useUpload(
     (url, publicId) => {
       setResume({ resume: url, resumeId: publicId });
     },
@@ -60,7 +59,9 @@ export function AddResumeModal() {
     }
     try {
       console.log(resume);
-      handleDelete(employee?.resumeId);
+      if (employee?.resumeId) {
+        await handleDelete(employee?.resumeId);
+      }
       await dispatch(resumeUpload(resume));
       toast.success("Resume Uploaded");
       setResume({
@@ -114,12 +115,12 @@ export function AddResumeModal() {
               your resume
             </p>
             <span className="mt-3 text-xs text-slate-400">
-              PDF, DOC, DOCX (Max 5MB)
+              PDF (Max 5MB)
             </span>
             <input
               id="resume"
               type="file"
-              accept=".pdf,.doc,.docx"
+              accept=".pdf"
               className="hidden"
               onChange={handleUpload}
             />
@@ -127,7 +128,7 @@ export function AddResumeModal() {
           {resume.resume! ? (
             <Link
               target="_blank"
-              href={employee?.resume! || ""}
+              href={resume.resume || ""}
               className="flex items-center gap-3 rounded-xl border bg-slate-50 p-4"
             >
               <div className="rounded-lg bg-blue-100 p-3">
@@ -145,7 +146,7 @@ export function AddResumeModal() {
           <DialogClose
             render={
               <button
-                onClick={() => handleDelete(resume.resumeId)}
+                onClick={() => {handleDelete(resume.resumeId); setResume({resume: "", resumeId: ""})}}
                 disabled={loading}
                 className="cursor-pointer rounded-xl border border-slate-300 px-6 py-3 font-semibold text-slate-700 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-75"
               >

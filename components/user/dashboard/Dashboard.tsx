@@ -1,6 +1,13 @@
 "use client";
 
-import { User, LogOut, ChevronRight, FileUserIcon, Eye, File } from "lucide-react";
+import {
+  User,
+  LogOut,
+  ChevronRight,
+  FileUserIcon,
+  Eye,
+  File,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { logoutEmployee } from "@/store/slices/employeeAuthSlice";
@@ -22,9 +29,13 @@ const Dashboard = () => {
     socket.on("employeeProfileUpdated", () => {
       dispatch(getEmployeeProfile());
     });
+    socket.on("employeeResumeUploaded", () => {
+      dispatch(getEmployeeProfile());
+    });
 
     return () => {
       socket.off("employeeProfileUpdated");
+      socket.off("employeeResumeUploaded");
     };
   }, [dispatch]);
 

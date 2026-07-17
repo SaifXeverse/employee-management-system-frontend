@@ -1,45 +1,52 @@
 import { NextResponse } from "next/server";
 import cloudinary from "@/libs/cloudinary";
 
-export async function POST(req: Request) {
+export async function POST(req: Request): Promise<Response> {
   const form = await req.formData();
-  const file = form.get("file") as File;
+  const file = form.get("file") as Blob;
 
   if (!file) {
-    return NextResponse.json({ error: "No file provided" }, { status: 400 });
+    return NextResponse.json(
+      { error: "No file provided" },
+      { status: 400 }
+    );
   }
 
   const buffer = Buffer.from(await file.arrayBuffer());
 
-  return new Promise((resolve, reject) => {
+  return new Promise<Response>((resolve) => {
     const uploadStream = cloudinary.uploader.upload_stream(
-      { folder: "products", resource_type: "auto" },
+      {
+        folder: "products",
+        resource_type: "auto",
+      },
       (error, result) => {
         if (error) {
-          reject(error);
+          resolve(
+            NextResponse.json(
+              { error: error.message },
+              { status: 500 }
+            )
+          );
         } else {
           resolve(
             NextResponse.json({
               url: result?.secure_url,
               publicId: result?.public_id,
-            }),
+            })
           );
         }
-      },
+      }
     );
+
     uploadStream.end(buffer);
   });
 }
 
+
 export async function DELETE(req: Request) {
   try {
-    const { publicId, resourceType } = await req.json();
-    // if (resourceType !== "image") {
-    //   return NextResponse.json(
-    //     { error: "Type is not image" },
-    //     { status: 400 },
-    //   );
-    // }
+    const { publicId } = await req.json();
 
     if (!publicId) {
       return NextResponse.json(
@@ -48,9 +55,7 @@ export async function DELETE(req: Request) {
       );
     }
 
-    const result = await cloudinary.uploader.destroy(publicId, {
-      resource_type: resourceType,
-    });
+    const result = await cloudinary.uploader.destroy(publicId);
 
     if (result.result !== "ok") {
       return NextResponse.json(
@@ -66,9 +71,9 @@ export async function DELETE(req: Request) {
       message: "Asset deleted successfully",
     });
   } catch (error) {
-    // return NextResponse.json(
-    //   { error: "Internal Server Error" },
-    //   { status: 500 },
-    // );
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 },
+    );
   }
 }
