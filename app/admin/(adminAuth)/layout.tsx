@@ -1,16 +1,26 @@
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+"use client";
 
-export default async function AuthLayout({
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import api from "@/libs/axios";
+
+export default function AuthLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const cookieStore = await cookies();
-  const token = cookieStore.get("AccessToken")?.value;
+  const router = useRouter();
 
-  if (token) {
-    redirect("/admin/dashboard");
-  }
+  useEffect(() => {
+    const checkAdmin = async () => {
+      try {
+        await api.get("/auth/verify");
+        router.push("/admin/dashboard");
+      } catch {}
+    };
+
+    checkAdmin();
+  }, [router]);
+
   return <>{children}</>;
 }

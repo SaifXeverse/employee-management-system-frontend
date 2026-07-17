@@ -1,14 +1,5 @@
-import { cookies } from "next/headers";
-import { redirect,  } from "next/navigation";
+import { redirect } from "next/navigation";
 
-export default async function Home() {
-  const cookieStore = await cookies();
-
-  const token = cookieStore.get("AccessTokenEmployee")?.value;
-
-  if (token) {
-    redirect("/dashboard");
-  } else {
-    redirect("/login");
-  }
+export default function Home() {
+  redirect("/login");
 }
