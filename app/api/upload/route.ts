@@ -1,20 +1,11 @@
 import { NextResponse } from "next/server";
 import cloudinary from "@/libs/cloudinary";
 
-export async function POST(req: Request): Promise<Response> {
-  const form = await req.formData();
-  const file = form.get("file") as Blob;
-
-  if (!file) {
-    return NextResponse.json(
-      { error: "No file provided" },
-      { status: 400 }
-    );
-  }
-
-  const buffer = Buffer.from(await file.arrayBuffer());
-
-  return new Promise<Response>((resolve) => {
+function uploadToCloudinary(buffer: Buffer): Promise<{
+  url: string;
+  publicId: string;
+}> {
+  return new Promise((resolve, reject) => {
     const uploadStream = cloudinary.uploader.upload_stream(
       {
         folder: "products",
@@ -22,20 +13,14 @@ export async function POST(req: Request): Promise<Response> {
       },
       (error, result) => {
         if (error) {
-          resolve(
-            NextResponse.json(
-              { error: error.message },
-              { status: 500 }
-            )
-          );
-        } else {
-          resolve(
-            NextResponse.json({
-              url: result?.secure_url,
-              publicId: result?.public_id,
-            })
-          );
+          reject(error);
+          return;
         }
+
+        resolve({
+          url: result?.secure_url || "",
+          publicId: result?.public_id || "",
+        });
       }
     );
 
@@ -43,15 +28,39 @@ export async function POST(req: Request): Promise<Response> {
   });
 }
 
+export async function POST(req: Request): Promise<Response> {
+  try {
+    const form = await req.formData();
+    const file = form.get("file");
 
-export async function DELETE(req: Request) {
+    if (!(file instanceof Blob)) {
+      return NextResponse.json(
+        { error: "No file provided" },
+        { status: 400 }
+      );
+    }
+
+    const buffer = Buffer.from(await file.arrayBuffer());
+
+    const result = await uploadToCloudinary(buffer);
+
+    return NextResponse.json(result);
+  } catch (error) {
+    return NextResponse.json(
+      { error: "Upload failed" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function DELETE(req: Request): Promise<Response> {
   try {
     const { publicId } = await req.json();
 
     if (!publicId) {
       return NextResponse.json(
         { error: "Public ID is required" },
-        { status: 400 },
+        { status: 400 }
       );
     }
 
@@ -59,10 +68,8 @@ export async function DELETE(req: Request) {
 
     if (result.result !== "ok") {
       return NextResponse.json(
-        {
-          error: `Failed to delete asset. Cloudinary response: ${result.result}`,
-        },
-        { status: 500 },
+        { error: "Failed to delete asset" },
+        { status: 500 }
       );
     }
 
@@ -70,10 +77,10 @@ export async function DELETE(req: Request) {
       success: true,
       message: "Asset deleted successfully",
     });
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { error: "Internal Server Error" },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }
