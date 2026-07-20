@@ -192,32 +192,32 @@ const EmployeeDetails = () => {
                   Click the button below to view or download the employee
                   resume.
                 </p>
-                <div className="mt-6 flex items-center justify-center gap-3">
+                <div className="mt-6 flex overflow-hidden text-xs sm:text-sm items-center justify-center gap-3">
                   <Link
                     href={employee.resume}
                     target="_blank"
                     prefetch={false}
-                    className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-5 py-3 text-sm font-medium text-white transition-all duration-300 hover:bg-blue-700 hover:-translate-y-0.5 hover:shadow-lg"
-                      >
-                        <Eye size={18} />
-                        View
+                    className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-2 sm:px-5 py-2 sm:py-3 font-medium text-white transition-all duration-300 hover:bg-blue-700 hover:-translate-y-0.5 hover:shadow-lg"
+                  >
+                    <Eye size={18} />
+                    View
                   </Link>
-                   <Link
-                        href={getAttachmentUrl(employee?.resume || "")}
-                        prefetch={false}
-                        className="inline-flex items-center gap-2 rounded-xl border border-blue-600 bg-white px-5 py-3 text-sm font-medium text-blue-600 transition-all duration-300 hover:bg-blue-50 hover:-translate-y-0.5 hover:shadow-lg"
-                      >
-                        <Download size={18} />
-                        Download
-                      </Link>
+                  <Link
+                    href={getAttachmentUrl(employee?.resume || "")}
+                    prefetch={false}
+                    className="inline-flex items-center gap-2 rounded-xl border border-blue-600 bg-white px-2 sm:px-5 py-2 sm:py-3 font-medium text-blue-600 transition-all duration-300 hover:bg-blue-50 hover:-translate-y-0.5 hover:shadow-lg"
+                  >
+                    <Download size={18} />
+                    Download
+                  </Link>
                   <button
                     onClick={() =>
                       dispatch(deleteEmployeeResumeByAdmin(employee.id!))
                     }
-                    className="inline-flex items-center gap-2 rounded-xl bg-red-500 px-5 py-3 text-sm font-medium text-white transition-all duration-300 hover:bg-red-600 hover:-translate-y-0.5 hover:shadow-lg"
-                      >
-                        <Trash2 size={18} />
-                        Delete
+                    className="inline-flex items-center gap-2 rounded-xl bg-red-500 px-2 sm:px-5 py-2 sm:py-3 font-medium text-white transition-all duration-300 hover:bg-red-600 hover:-translate-y-0.5 hover:shadow-lg"
+                  >
+                    <Trash2 size={18} />
+                    Delete
                   </button>
                 </div>
               </div>
