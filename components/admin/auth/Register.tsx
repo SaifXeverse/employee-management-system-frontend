@@ -106,7 +106,7 @@ const Register = () => {
             </div>
             <button
               disabled={loading}
-              className="h-14 cursor-pointer mt-3 w-full rounded-xl bg-[#1b388a] font-semibold hover:to-blue-500 hover:from-violet-500 text-white transition hover:shadow-lg"
+              className="h-14 cursor-pointer mt-3 w-full rounded-xl bg-[#1b388a] font-semibold hover:to-blue-500 hover:from-violet-500 text-white transition hover:shadow-lg disabled:opacity-50"
             >
               {loading ? "Creating..." : "Create Account"}
             </button>
