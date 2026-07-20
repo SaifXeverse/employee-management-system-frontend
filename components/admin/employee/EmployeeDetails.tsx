@@ -192,7 +192,7 @@ const EmployeeDetails = () => {
                   Click the button below to view or download the employee
                   resume.
                 </p>
-                <div className="mt-6 flex overflow-hidden text-xs sm:text-sm items-center justify-center gap-3">
+                <div className="pt-6 flex overflow-hidden text-xs sm:text-sm items-center justify-center gap-3">
                   <Link
                     href={employee.resume}
                     target="_blank"
