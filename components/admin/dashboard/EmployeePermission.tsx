@@ -161,7 +161,7 @@ const EmployeePermission = () => {
                     <div className="flex justify-center">
                       <div className="flex gap-2 items-center">
                         <button
-                          className="bg-[#1b388a] rounded-md transition cursor-pointer hover:bg-[#204097] text-white px-4 py-2"
+                          className="bg-[#2b4eaf] rounded-md transition cursor-pointer hover:bg-[#204097] text-white px-4 py-2"
                           onClick={() => handleStatus(employee.id!)}
                         >
                           Active
@@ -222,7 +222,7 @@ const EmployeePermission = () => {
 
               <div className="flex gap-1 items-center">
                 <button
-                  className="bg-[#1b388a] rounded-md transition cursor-pointer hover:bg-[#204097] text-white px-3 py-2"
+                  className="bg-[#2b4eaf] rounded-md transition cursor-pointer hover:bg-[#204097] text-white px-3 py-2"
                   onClick={() => handleStatus(employee.id!)}
                 >
                   Active
