@@ -7,10 +7,12 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
   getInactiveEmployees,
   updateEmployeeStatus,
+  deleteEmployee,
 } from "@/store/slices/employeeSlice";
 import { getSocket } from "@/libs/socket";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import useUpload from "@/hooks/useUpload";
 
 const EmployeePermission = () => {
   const dispatch = useAppDispatch();
@@ -25,11 +27,17 @@ const EmployeePermission = () => {
     socket.on("employeeStatusChanged", () => {
       dispatch(getInactiveEmployees());
     });
+    socket.on("employeeDeleted", () => {
+      dispatch(getInactiveEmployees());
+    });
 
     return () => {
       socket.off("employeeStatusChanged");
+      socket.off("employeeDeleted");
     };
   }, [dispatch]);
+
+  const { handleDelete } = useUpload(() => {});
 
   const filteredEmployeesInactive = useMemo(() => {
     return employeesInactive.filter((employee) =>
@@ -40,10 +48,17 @@ const EmployeePermission = () => {
   const handleStatus = async (id: number) => {
     await dispatch(updateEmployeeStatus(id));
     dispatch(getInactiveEmployees());
-    toast.success("employee Activated")
+    toast.success("employee Activated");
     if (employeesInactive.length === 1) {
-      router.replace("/admin/employees")
+      router.replace("/admin/employees");
     }
+  };
+
+  const handleDeleted = async (imgId: string, id: number) => {
+    if (imgId) {
+      handleDelete(imgId);
+    }
+    await dispatch(deleteEmployee(id));
   };
 
   return (
@@ -144,14 +159,22 @@ const EmployeePermission = () => {
 
                   <td className="px-6">
                     <div className="flex justify-center">
-                      <label className="relative inline-flex cursor-pointer items-center">
+                      <div className="flex gap-4 items-center">
                         <button
-                          className="bg-violet-600 rounded-md transition cursor-pointer hover:bg-violet-500 text-white px-4 py-2"
+                          className="bg-violet-600 rounded-md transition cursor-pointer hover:bg-violet-500 text-white px-2 py-1"
                           onClick={() => handleStatus(employee.id!)}
                         >
                           Active
                         </button>
-                      </label>
+                        <button
+                          className="bg-red-500 rounded-md transition cursor-pointer hover:bg-red-600 text-white px-2 py-1"
+                          onClick={() =>
+                            handleDeleted(employee.imgId, employee.id!)
+                          }
+                        >
+                          Delete
+                        </button>
+                      </div>
                     </div>
                   </td>
                 </tr>
@@ -195,18 +218,22 @@ const EmployeePermission = () => {
             </div>
 
             <div className="mt-5 flex items-center justify-between border-t border-slate-100 pt-4">
-              <span className="font-medium text-slate-700">Permission</span>
+              <span className="font-medium text-slate-700">Action</span>
 
-              <label className="relative inline-flex cursor-pointer items-center">
-                <input
-                  type="checkbox"
-                  onChange={() => handleStatus(employee.id!)}
-                  defaultChecked={false}
-                  className="peer sr-only"
-                />
-
-                <div className="peer h-6 w-11 rounded-full bg-slate-300 transition peer-checked:bg-violet-600 after:absolute after:left-0.5 after:top-0.5 after:h-5 after:w-5 after:rounded-full after:bg-white after:transition-all after:content-[''] peer-checked:after:translate-x-5"></div>
-              </label>
+              <div className="flex gap-3 items-center">
+                <button
+                  className="bg-violet-600 rounded-md transition cursor-pointer hover:bg-violet-500 text-white px-2 py-1"
+                  onClick={() => handleStatus(employee.id!)}
+                >
+                  Active
+                </button>
+                <button
+                  className="bg-red-500 rounded-md transition cursor-pointer hover:bg-red-600 text-white px-2 py-1"
+                  onClick={() => handleDeleted(employee.imgId, employee.id!)}
+                >
+                  Delete
+                </button>
+              </div>
             </div>
           </div>
         ))}
