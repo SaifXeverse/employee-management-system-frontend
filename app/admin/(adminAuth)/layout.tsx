@@ -3,6 +3,7 @@
 import { ReactNode, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import api from "@/libs/axios";
+import Loading from "@/components/loader/Loading";
 
 export default function AdminAuthLayout({ children }: { children: ReactNode }) {
   const router = useRouter();
@@ -12,8 +13,7 @@ export default function AdminAuthLayout({ children }: { children: ReactNode }) {
     const checkLogin = async () => {
       try {
         await api.get("/auth/verify");
-        router.push("/admin/dashboard");
-        setLoading(false);
+        router.replace("/admin/dashboard");
         return;
       } catch (error) {
         console.log(error);
@@ -21,17 +21,20 @@ export default function AdminAuthLayout({ children }: { children: ReactNode }) {
 
       try {
         await api.get("/employee/verify");
-        router.push("/dashboard");
-        setLoading(false);
+        router.replace("/dashboard");
+        return;
       } catch (error) {
         console.log(error);
       }
+      setLoading(false);
     };
 
     checkLogin();
   }, [router]);
 
-  if (loading) return null;
+  if (loading) {
+    return <Loading />;
+  }
 
   return <>{children}</>;
 }
