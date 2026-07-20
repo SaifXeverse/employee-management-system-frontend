@@ -111,7 +111,7 @@ const EmployeeTable = () => {
 
           <button
             onClick={() => setSortAsc(!sortAsc)}
-            className="flex h-11 items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-5 text-sm font-medium transition hover:bg-slate-100"
+            className="flex h-11 items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 text-sm font-medium transition hover:bg-slate-100"
           >
             <ArrowUpDown size={17} />
             Salary
@@ -121,7 +121,7 @@ const EmployeeTable = () => {
             href="/admin/employees/add"
             replace
             prefetch={false}
-            className="flex h-11 lg:w-3/5 items-center justify-center gap-2 rounded-xl bg-[#1b388a] px-4 text-sm font-semibold text-white transition hover:shadow-lg"
+            className="flex h-11 lg:w-3/5 items-center justify-center gap-2 rounded-xl bg-[#1b388a] px-2 text-sm font-semibold text-white transition hover:shadow-lg"
           >
             <UserPlus size={18} />
             Add Employee
