@@ -59,6 +59,7 @@ const EmployeePermission = () => {
       handleDelete(imgId);
     }
     await dispatch(deleteEmployee(id));
+    toast.success("employee Deleted");
   };
 
   return (

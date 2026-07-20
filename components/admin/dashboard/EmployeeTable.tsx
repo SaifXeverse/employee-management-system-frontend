@@ -19,6 +19,7 @@ import useUpload from "@/hooks/useUpload";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { getEmployees, deleteEmployee } from "@/store/slices/employeeSlice";
 import { getSocket } from "@/libs/socket";
+import toast from "react-hot-toast";
 
 const EmployeeTable = () => {
   const dispatch = useAppDispatch();
@@ -74,6 +75,7 @@ const EmployeeTable = () => {
       handleDelete(imgId);
     }
     await dispatch(deleteEmployee(id));
+    toast.success("employee Deleted");
   };
 
   return (
