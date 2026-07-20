@@ -81,9 +81,10 @@ const Register = () => {
 
                     <input
                       type="text"
+                      required
                       name="name"
                       onChange={handleChange}
-                      placeholder="John Doe"
+                      placeholder="Saif"
                       className="ml-3 w-full bg-transparent text-slate-700 outline-none placeholder:text-slate-400"
                     />
                   </div>
@@ -99,6 +100,7 @@ const Register = () => {
                     <input
                       type="email"
                       name="email"
+                      required
                       onChange={handleChange}
                       placeholder="employee@example.com"
                       className="ml-3 w-full bg-transparent text-slate-700 outline-none placeholder:text-slate-400"
@@ -116,6 +118,7 @@ const Register = () => {
                     <input
                       type="password"
                       name="password"
+                      required
                       onChange={handleChange}
                       placeholder="••••••••"
                       className="ml-3 w-full bg-transparent text-slate-700 outline-none placeholder:text-slate-400"

@@ -15,7 +15,7 @@ export default function AdminMainLayout({ children }: { children: ReactNode }) {
         await api.get("/auth/verify");
         try {
           await api.get("/employee/verify");
-          router.push("/dashboard");
+          router.replace("/dashboard");
           return;
         } catch (error) {
           console.log(error);

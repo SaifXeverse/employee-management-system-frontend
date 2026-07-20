@@ -65,8 +65,9 @@ const Register = () => {
                 <input
                   type="text"
                   name="name"
+                  required
                   onChange={handleChange}
-                  placeholder="John Doe"
+                  placeholder="Saif"
                   className="ml-3 w-full bg-transparent outline-none"
                 />
               </div>
@@ -80,6 +81,7 @@ const Register = () => {
                 <input
                   type="email"
                   name="email"
+                  required
                   onChange={handleChange}
                   placeholder="john@example.com"
                   className="ml-3 w-full bg-transparent outline-none"
@@ -96,6 +98,7 @@ const Register = () => {
                   type="password"
                   name="password"
                   onChange={handleChange}
+                  required
                   placeholder="********"
                   className="ml-3 w-full bg-transparent outline-none"
                 />

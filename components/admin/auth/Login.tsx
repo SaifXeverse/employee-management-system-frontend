@@ -66,6 +66,7 @@ const Login = () => {
                 <input
                   type="email"
                   name="email"
+                  required
                   onChange={handleChange}
                   placeholder="name@example.com"
                   className="ml-3 w-full bg-transparent outline-none"
@@ -81,6 +82,7 @@ const Login = () => {
                 <input
                   type="password"
                   name="password"
+                  required
                   onChange={handleChange}
                   placeholder="********"
                   className="ml-3 w-full bg-transparent outline-none"

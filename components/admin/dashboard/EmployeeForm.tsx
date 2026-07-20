@@ -124,7 +124,7 @@ const EmployeeForm = ({
                 name="name"
                 value={inputs.name}
                 onChange={handleChange}
-                placeholder="Saif Khan"
+                placeholder="Saif"
                 className="ml-3 w-full min-w-0 bg-transparent text-sm outline-none sm:text-base"
                 required
               />
