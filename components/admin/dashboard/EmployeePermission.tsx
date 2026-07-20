@@ -159,7 +159,7 @@ const EmployeePermission = () => {
 
                   <td className="px-6">
                     <div className="flex justify-center">
-                      <div className="flex gap-4 items-center">
+                      <div className="flex gap-2 items-center">
                         <button
                           className="bg-[#1b388a] rounded-md transition cursor-pointer hover:bg-[#204097] text-white px-4 py-2"
                           onClick={() => handleStatus(employee.id!)}
@@ -220,7 +220,7 @@ const EmployeePermission = () => {
             <div className="mt-5 flex items-center justify-between border-t border-slate-100 pt-4">
               <span className="font-medium text-slate-700">Action</span>
 
-              <div className="flex gap-3 items-center">
+              <div className="flex gap-1 items-center">
                 <button
                   className="bg-[#1b388a] rounded-md transition cursor-pointer hover:bg-[#204097] text-white px-3 py-2"
                   onClick={() => handleStatus(employee.id!)}
