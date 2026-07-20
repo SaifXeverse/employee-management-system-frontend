@@ -21,9 +21,7 @@ export default function EmployeeMainLayout({
           await api.get("/auth/verify");
           router.replace("/admin/dashboard");
           return;
-        } catch (error) {
-          console.log(error);
-        }
+        } catch {}
 
         setLoading(false);
       } catch {

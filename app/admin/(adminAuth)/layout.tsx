@@ -15,17 +15,13 @@ export default function AdminAuthLayout({ children }: { children: ReactNode }) {
         await api.get("/auth/verify");
         router.replace("/admin/dashboard");
         return;
-      } catch (error) {
-        console.log(error);
-      }
+      } catch {}
 
       try {
         await api.get("/employee/verify");
         router.replace("/dashboard");
         return;
-      } catch (error) {
-        console.log(error);
-      }
+      } catch {}
       setLoading(false);
     };
 

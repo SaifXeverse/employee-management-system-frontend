@@ -19,17 +19,13 @@ export default function EmployeeAuthLayout({
         await api.get("/employee/verify");
         router.replace("/dashboard");
         return;
-      } catch (error) {
-        console.log(error);
-      }
+      } catch {}
 
       try {
         await api.get("/auth/verify");
         router.replace("/admin/dashboard");
         return;
-      } catch (error) {
-        console.log(error);
-      }
+      } catch {}
       setLoading(false);
     };
 

@@ -17,9 +17,7 @@ export default function AdminMainLayout({ children }: { children: ReactNode }) {
           await api.get("/employee/verify");
           router.replace("/dashboard");
           return;
-        } catch (error) {
-          console.log(error);
-        }
+        } catch {}
 
         setLoading(false);
       } catch {
