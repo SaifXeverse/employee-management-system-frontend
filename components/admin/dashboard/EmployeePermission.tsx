@@ -161,13 +161,13 @@ const EmployeePermission = () => {
                     <div className="flex justify-center">
                       <div className="flex gap-4 items-center">
                         <button
-                          className="bg-violet-600 rounded-md transition cursor-pointer hover:bg-violet-500 text-white px-2 py-1"
+                          className="bg-[#1b388a] rounded-md transition cursor-pointer hover:bg-[#204097] text-white px-4 py-2"
                           onClick={() => handleStatus(employee.id!)}
                         >
                           Active
                         </button>
                         <button
-                          className="bg-red-500 rounded-md transition cursor-pointer hover:bg-red-600 text-white px-2 py-1"
+                          className="bg-red-500 rounded-md transition cursor-pointer hover:bg-red-600 text-white px-4 py-2"
                           onClick={() =>
                             handleDeleted(employee.imgId, employee.id!)
                           }
@@ -222,13 +222,13 @@ const EmployeePermission = () => {
 
               <div className="flex gap-3 items-center">
                 <button
-                  className="bg-violet-600 rounded-md transition cursor-pointer hover:bg-violet-500 text-white px-2 py-1"
+                  className="bg-[#1b388a] rounded-md transition cursor-pointer hover:bg-[#204097] text-white px-3 py-2"
                   onClick={() => handleStatus(employee.id!)}
                 >
                   Active
                 </button>
                 <button
-                  className="bg-red-500 rounded-md transition cursor-pointer hover:bg-red-600 text-white px-2 py-1"
+                  className="bg-red-500 rounded-md transition cursor-pointer hover:bg-red-600 text-white px-3 py-2"
                   onClick={() => handleDeleted(employee.imgId, employee.id!)}
                 >
                   Delete
