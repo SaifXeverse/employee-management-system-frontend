@@ -1,13 +1,13 @@
 "use client";
 
-import { useEffect } from "react";
+import { ReactNode, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import api from "@/libs/axios";
 
 export default function AdminAuthLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
   const router = useRouter();
 
@@ -17,12 +17,17 @@ export default function AdminAuthLayout({
         await api.get("/auth/verify");
         router.push("/admin/dashboard");
         return;
-      } catch {}
+      } catch (error) {
+        console.log(error);
+        
+      }
 
       try {
         await api.get("/employee/verify");
         router.push("/dashboard");
-      } catch {}
+      } catch (error) {
+        console.log(error);
+      }
     };
 
     checkLogin();

@@ -233,7 +233,7 @@ const EmployeeTable = () => {
 
                   <td className="px-5 text-center">
                     <span
-                      className={`rounded-full px-3 py-1 text-xs font-semibold ${
+                      className={`rounded-full whitespace-nowrap px-3 py-1 text-xs font-semibold ${
                         employee.resume
                           ? "bg-green-100 text-green-700"
                           : "bg-red-100 text-red-700"
@@ -373,12 +373,12 @@ const EmployeeTable = () => {
                 </div>
               </div>
 
-              <div className="mt-5 flex justify-center gap-4 border-t border-slate-100 pt-4">
+              <div className="mt-5 flex justify-center overflow-hidden gap-4 border-t border-slate-100 pt-4">
                 <Link
                   href={`/admin/employees/${employee.id}`}
                   replace
                   prefetch={false}
-                  className="rounded-lg bg-blue-100 flex gap-2 items-center py-2 px-4 text-blue-600 transition hover:bg-blue-200"
+                  className="rounded-lg bg-blue-100 flex gap-2 justify-center text-xs md:text-base items-center py-2 px-4 w-full text-blue-600 transition hover:bg-blue-200"
                 >
                   <Eye size={17} />
                   View
@@ -388,7 +388,7 @@ const EmployeeTable = () => {
                   href={`/admin/employees/${employee.id}/edit`}
                   replace
                   prefetch={false}
-                  className="rounded-lg bg-emerald-100 flex gap-2 items-center py-2 px-4 text-emerald-600 transition hover:bg-emerald-200"
+                  className="rounded-lg bg-emerald-100 w-full justify-center text-xs md:text-base flex gap-2 items-center py-2 px-4 text-emerald-600 transition hover:bg-emerald-200"
                 >
                   <Pencil size={17} />
                   Edit
@@ -396,7 +396,7 @@ const EmployeeTable = () => {
 
                 <button
                   onClick={() => handleDeleted(employee?.imgId!, employee?.id!)}
-                  className="rounded-lg bg-red-100 flex gap-2 items-center py-2 px-4 text-red-600 transition hover:bg-red-200"
+                  className="rounded-lg bg-red-100 flex w-full justify-center text-xs md:text-base gap-2 items-center py-2 px-4 text-red-600 transition hover:bg-red-200"
                 >
                   <Trash2 size={17} />
                   Delete

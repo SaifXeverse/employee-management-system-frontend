@@ -1,13 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import api from "@/libs/axios";
 
 export default function EmployeeMainLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
@@ -20,7 +20,9 @@ export default function EmployeeMainLayout({
           await api.get("/auth/verify");
           router.push("/admin/dashboard");
           return;
-        } catch {}
+        } catch (error) {
+          console.log(error);
+        }
 
         setLoading(false);
       } catch {
