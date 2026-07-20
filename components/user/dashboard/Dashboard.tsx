@@ -95,7 +95,7 @@ const Dashboard = () => {
             </div>
           </button>
           <AddResumeModal />
-          {/* {employee?.resume && (
+          {employee?.resume && (
             <Link
               prefetch={false}
               target="_blank"
@@ -116,7 +116,7 @@ const Dashboard = () => {
                 <ChevronRight size={18} />
               </div>
             </Link>
-          )} */}
+          )}
         </div>
       </div>
     </div>
