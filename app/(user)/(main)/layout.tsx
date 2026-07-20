@@ -3,6 +3,7 @@
 import { ReactNode, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import api from "@/libs/axios";
+import Loading from "@/components/loader/Loading";
 
 export default function EmployeeMainLayout({
   children,
@@ -33,7 +34,7 @@ export default function EmployeeMainLayout({
     checkEmployee();
   }, [router]);
 
-  if (loading) return null;
+  if (loading) return <Loading />;
 
   return <main>{children}</main>;
 }

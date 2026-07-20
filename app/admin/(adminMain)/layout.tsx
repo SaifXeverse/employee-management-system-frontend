@@ -3,12 +3,9 @@
 import { ReactNode, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import api from "@/libs/axios";
+import Loading from "@/components/loader/Loading";
 
-export default function AdminMainLayout({
-  children,
-}: {
-  children: ReactNode;
-}) {
+export default function AdminMainLayout({ children }: { children: ReactNode }) {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
 
@@ -33,7 +30,7 @@ export default function AdminMainLayout({
     checkAdmin();
   }, [router]);
 
-  if (loading) return null;
+  if (loading) return <Loading />;
 
   return <main>{children}</main>;
 }
